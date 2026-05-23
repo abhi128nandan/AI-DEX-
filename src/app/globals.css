@@ -1,26 +1,333 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  --color-background: hsl(240 10% 3.9%);
+  --color-foreground: hsl(0 0% 98%);
+  
+  --color-card: hsl(240 10% 3.9%);
+  --color-card-foreground: hsl(0 0% 98%);
+  
+  --color-popover: hsl(240 10% 3.9%);
+  --color-popover-foreground: hsl(0 0% 98%);
+  
+  --color-primary: hsl(262.1 83.3% 57.8%);
+  --color-primary-foreground: hsl(210 40% 98%);
+  
+  --color-secondary: hsl(240 3.7% 15.9%);
+  --color-secondary-foreground: hsl(0 0% 98%);
+  
+  --color-muted: hsl(240 3.7% 15.9%);
+  --color-muted-foreground: hsl(240 5% 64.9%);
+  
+  --color-accent: hsl(240 3.7% 15.9%);
+  --color-accent-foreground: hsl(0 0% 98%);
+  
+  --color-destructive: hsl(0 62.8% 30.6%);
+  --color-destructive-foreground: hsl(0 0% 98%);
+  
+  --color-border: hsl(240 3.7% 15.9%);
+  --color-input: hsl(240 3.7% 15.9%);
+  --color-ring: hsl(240 4.9% 83.9%);
+  
+  --radius-lg: 0.75rem;
+  --radius-md: calc(0.75rem - 2px);
+  --radius-sm: calc(0.75rem - 4px);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+  body {
+    background-color: #050508;
+    color: var(--color-foreground);
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  /* Force dark theme on native elements — no white UI leaking */
+  select,
+  option,
+  input,
+  textarea {
+    color-scheme: dark;
+    background-color: transparent;
+  }
+
+  /* Remove default browser focus ring for custom styling */
+  :focus-visible {
+    outline: none;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* ═══════════════════════════════════════════
+   Custom Scrollbar — Thin, Purple-accented
+   ═══════════════════════════════════════════ */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
 }
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(139, 92, 246, 0.2);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(139, 92, 246, 0.4);
+}
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(139, 92, 246, 0.2) transparent;
+}
+
+/* ═══════════════════════════════════════════
+   Dot Pattern Backgrounds
+   ═══════════════════════════════════════════ */
+.bg-dot-thick-neutral-800 {
+  background-image: radial-gradient(circle, #262626 2px, transparent 2px);
+  background-size: 24px 24px;
+}
+
+.bg-dot-thick-indigo-500 {
+  background-image: radial-gradient(circle, #6366f1 3px, transparent 3px);
+  background-size: 24px 24px;
+}
+
+/* ═══════════════════════════════════════════
+   Glass Card — Enhanced with depth
+   ═══════════════════════════════════════════ */
+.glass-card {
+  background: rgba(12, 12, 20, 0.7);
+  backdrop-filter: blur(20px) saturate(1.6);
+  -webkit-backdrop-filter: blur(20px) saturate(1.6);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 
+    0 4px 30px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.glass-card:hover {
+  background: rgba(14, 14, 24, 0.85);
+  border: 1px solid rgba(124, 58, 237, 0.3);
+  box-shadow: 
+    0 0 20px rgba(124, 58, 237, 0.1),
+    0 8px 40px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+/* ═══════════════════════════════════════════
+   Skeleton Loading Animation
+   ═══════════════════════════════════════════ */
+@keyframes skeleton-pulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.15; }
+}
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.04) 25%,
+    rgba(255, 255, 255, 0.08) 50%,
+    rgba(255, 255, 255, 0.04) 75%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.8s ease-in-out infinite;
+  border-radius: 8px;
+}
+
+@keyframes skeleton-shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ═══════════════════════════════════════════
+   Modal & Panel Animations
+   ═══════════════════════════════════════════ */
+@keyframes backdrop-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slide-in-right {
+  from { transform: translateX(100%); opacity: 0.8; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes slide-out-right {
+  from { transform: translateX(0); opacity: 1; }
+  to { transform: translateX(100%); opacity: 0.8; }
+}
+
+/* ═══════════════════════════════════════════
+   Sidebar Glow
+   ═══════════════════════════════════════════ */
+@keyframes sidebar-glow {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.6; }
+}
+
+.sidebar-glow-line {
+  background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.6), rgba(34, 211, 238, 0.4), transparent);
+  animation: sidebar-glow 4s ease-in-out infinite;
+}
+
+/* ═══════════════════════════════════════════
+   Fade-in Animations
+   ═══════════════════════════════════════════ */
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.4s ease-out forwards;
+}
+
+.stagger-1 { animation-delay: 50ms; }
+.stagger-2 { animation-delay: 100ms; }
+.stagger-3 { animation-delay: 150ms; }
+
+/* ═══════════════════════════════════════════
+   Progressive Rendering Utilities
+   ═══════════════════════════════════════════ */
+@keyframes progressive-reveal {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.progressive-item {
+  opacity: 0;
+  animation: progressive-reveal 0.35s ease-out forwards;
+}
+
+.progressive-delay-1 { animation-delay: 80ms; }
+.progressive-delay-2 { animation-delay: 200ms; }
+.progressive-delay-3 { animation-delay: 350ms; }
+.progressive-delay-4 { animation-delay: 500ms; }
+
+/* ═══════════════════════════════════════════
+   Body scroll lock (when modal open)
+   ═══════════════════════════════════════════ */
+body.modal-open {
+  overflow: hidden;
+}
+
+/* ═══════════════════════════════════════════
+   Auth Fuse Variables
+   ═══════════════════════════════════════════ */
+:root {
+  --radius: 1rem;
+  --accent: oklch(0.89 0 0);
+  --destructive-foreground: oklch(0.985 0 0);
+}
+
+@theme inline {
+  --color-destructive-foreground: var(--destructive-foreground);
+}
+
+/* ═══════════════════════════════════════════
+   Radix Select Animations — matches shadcn/ui
+   ═══════════════════════════════════════════ */
+@keyframes selectFadeIn {
+  from { opacity: 0; transform: scale(0.96) translateY(-4px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+@keyframes selectFadeOut {
+  from { opacity: 1; transform: scale(1) translateY(0); }
+  to { opacity: 0; transform: scale(0.96) translateY(-4px); }
+}
+
+[data-radix-popper-content-wrapper] {
+  z-index: 200 !important;
+}
+
+/* ═══════════════════════════════════════════
+   Premium Glow & Gradient Utilities
+   ═══════════════════════════════════════════ */
+.glow-purple {
+  box-shadow: 0 0 20px rgba(124, 58, 237, 0.15), 0 0 60px rgba(124, 58, 237, 0.05);
+}
+
+.glow-cyan {
+  box-shadow: 0 0 20px rgba(6, 182, 212, 0.15), 0 0 60px rgba(6, 182, 212, 0.05);
+}
+
+.text-gradient-primary {
+  background: linear-gradient(135deg, #a78bfa, #06b6d4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ═══════════════════════════════════════════
+   Subtle ambient glow behind hero
+   ═══════════════════════════════════════════ */
+@keyframes ambient-glow {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(1.05); }
+}
+
+.ambient-glow {
+  animation: ambient-glow 6s ease-in-out infinite;
+}
+
+/* ═══════════════════════════════════════════
+   Tailwind CSS animation utilities for Radix
+   ═══════════════════════════════════════════ */
+@keyframes animateIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes animateOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes zoomIn95 {
+  from { transform: scale(0.95); }
+  to { transform: scale(1); }
+}
+
+@keyframes zoomOut95 {
+  from { transform: scale(1); }
+  to { transform: scale(0.95); }
+}
+
+@keyframes slideFromTop {
+  from { transform: translateY(-4px); }
+  to { transform: translateY(0); }
+}
+
+@keyframes slideFromBottom {
+  from { transform: translateY(4px); }
+  to { transform: translateY(0); }
+}
+
+/* ═══════════════════════════════════════════
+   Skeleton loading shimmer
+   ═══════════════════════════════════════════ */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.03) 25%,
+    rgba(255, 255, 255, 0.08) 50%,
+    rgba(255, 255, 255, 0.03) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+  border-radius: 0.5rem;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Body scroll lock when modal/panel is open */
+body.modal-open {
+  overflow: hidden;
+}
+
