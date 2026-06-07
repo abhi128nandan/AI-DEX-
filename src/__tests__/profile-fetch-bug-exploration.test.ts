@@ -272,7 +272,7 @@ describe('Property 2: Bug Condition - Profile Fetch Null Safety', () => {
 
     // Search for profile queries in common locations
     const locationsToCheck = [
-      'src/app/dashboard/page.tsx',
+      'src/app/(dashboard)/page.tsx',
       'src/app/profile/page.tsx',
       'src/app/api/profile/route.ts',
       'src/lib/auth.ts',

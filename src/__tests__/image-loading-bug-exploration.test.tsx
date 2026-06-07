@@ -62,7 +62,7 @@ describe('Property 1: Bug Condition - Image Loading Graceful Fallback', () => {
     const fs = await import('fs/promises');
     const path = await import('path');
     
-    const toolDetailPath = path.join(process.cwd(), 'src/app/tools/[slug]/page.tsx');
+    const toolDetailPath = path.join(process.cwd(), 'src/app/(dashboard)/tools/[slug]/page.tsx');
     const toolDetailSource = await fs.readFile(toolDetailPath, 'utf-8');
     
     // Check if this is a Server Component (no "use client")
@@ -75,9 +75,8 @@ describe('Property 1: Bug Condition - Image Loading Graceful Fallback', () => {
     // Bug Condition: Server Component with Image but no onError handler
     const hasBugCondition = isServerComponent && !hasOnErrorHandler && toolDetailSource.includes('<Image');
     
-    // On UNFIXED code: hasBugCondition should be TRUE (bug exists)
     // On FIXED code: hasBugCondition should be FALSE (bug fixed)
-    expect(hasBugCondition).toBe(true); // Expected: bug exists on unfixed code
+    expect(hasBugCondition).toBe(false); // Expected: bug is fixed
     
     // Document findings
     if (hasBugCondition) {
@@ -126,7 +125,7 @@ describe('Property 1: Bug Condition - Image Loading Graceful Fallback', () => {
     const fs = await import('fs/promises');
     const path = await import('path');
     
-    const toolDetailPath = path.join(process.cwd(), 'src/app/tools/[slug]/page.tsx');
+    const toolDetailPath = path.join(process.cwd(), 'src/app/(dashboard)/tools/[slug]/page.tsx');
     const toolDetailSource = await fs.readFile(toolDetailPath, 'utf-8');
     
     const hasUseClient = toolDetailSource.includes("'use client'") || toolDetailSource.includes('"use client"');
@@ -148,7 +147,7 @@ describe('Property 1: Bug Condition - Image Loading Graceful Fallback', () => {
     const fs = await import('fs/promises');
     const path = await import('path');
     
-    const toolDetailPath = path.join(process.cwd(), 'src/app/tools/[slug]/page.tsx');
+    const toolDetailPath = path.join(process.cwd(), 'src/app/(dashboard)/tools/[slug]/page.tsx');
     const toolDetailSource = await fs.readFile(toolDetailPath, 'utf-8');
     
     // Check if there's a fallback for null logo
@@ -205,7 +204,7 @@ describe('Property 1: Bug Condition - Image Loading Graceful Fallback', () => {
     const fs = await import('fs/promises');
     const path = await import('path');
     
-    const toolDetailPath = path.join(process.cwd(), 'src/app/tools/[slug]/page.tsx');
+    const toolDetailPath = path.join(process.cwd(), 'src/app/(dashboard)/tools/[slug]/page.tsx');
     const toolDetailSource = await fs.readFile(toolDetailPath, 'utf-8');
     
     const isServerComponent = !toolDetailSource.includes("'use client'") && !toolDetailSource.includes('"use client"');

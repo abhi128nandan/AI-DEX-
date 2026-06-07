@@ -68,7 +68,6 @@ export function validateUUID(value: unknown, fieldName: string = 'ID'): UUIDVali
   // Valid UUID
   result.isValid = true;
   delete result.error;
-  console.log('[UUID_VALIDATION_SUCCESS]', `${fieldName} is valid UUID:`, value);
   return result;
 }
 

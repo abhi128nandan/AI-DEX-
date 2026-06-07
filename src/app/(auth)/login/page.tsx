@@ -314,7 +314,6 @@ function SignUpForm({ onSuccess }: { onSuccess: () => void }) {
     setError("");
     
     try {
-      console.log(`[UI] Initiating registration for ${email}`);
       const response = await fetch('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -341,7 +340,6 @@ function SignUpForm({ onSuccess }: { onSuccess: () => void }) {
     setLoading(true);
     setError("");
     try {
-      console.log(`[UI] Initiating verification resend for ${email}`);
       const response = await fetch('/api/auth/resend', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

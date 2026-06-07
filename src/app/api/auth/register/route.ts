@@ -11,11 +11,6 @@ export async function POST(request: Request) {
     const body = await request.json();
     const { email, password } = body;
 
-    console.log(`\n--- [API] REGISTRATION INIT ---`);
-    console.log(`[API] Processing request for: ${email}`);
-
-    console.log("URL:", process.env.NEXT_PUBLIC_SUPABASE_URL);
-    console.log("KEY START:", process.env.SUPABASE_SERVICE_ROLE_KEY?.slice(0, 10));
 
     if (!email || !password) {
       console.warn(`[API] Registration failed - Missing critical credentials`);
@@ -28,7 +23,6 @@ export async function POST(request: Request) {
       
       // Verification Test provided by the user
       const { data: testData, error: testError } = await adminClient.auth.admin.listUsers();
-      console.log("TEST:", { error: testError });
 
     } catch (envError: any) {
       console.error(`[API] Admin Client Initialization Error:`, envError.message);
@@ -36,7 +30,6 @@ export async function POST(request: Request) {
     }
 
     // Step 1: Securely create user without triggering default Auth Email immediately
-    console.log(`[API] Attempting user creation via admin pipeline...`);
     const { data: userData, error: createError } = await adminClient.auth.admin.createUser({
       email,
       password,
@@ -53,10 +46,8 @@ export async function POST(request: Request) {
     }
 
     const newUserId = userData?.user?.id;
-    console.log(`[API] User dynamically created! User ID: ${newUserId}`);
 
     // Step 2: Generate specific cryptographically secure Validation URL
-    console.log(`[API] Generating manual verification link for explicit mapping...`);
     const { data: linkData, error: linkError } = await adminClient.auth.admin.generateLink({
       type: 'signup',
       email: email,
@@ -74,10 +65,8 @@ export async function POST(request: Request) {
     }
 
     const { action_link } = linkData.properties;
-    console.log(`[API] Secure verification link generated: ${action_link}`);
 
     // Step 3: Attempt custom Transactional Email transmission via Resend
-    console.log("Sending email to:", email);
     let resendSuccess = false;
     let emailResponseData = null;
 
@@ -104,7 +93,6 @@ export async function POST(request: Request) {
       } else {
         resendSuccess = true;
         emailResponseData = response.data;
-        console.log(`[API] Resend payload delivered! Response:`, emailResponseData);
       }
     } catch (resendCrashError) {
       console.error(`[API] Exception inside Resend Try/Catch block:`, resendCrashError);
@@ -113,7 +101,6 @@ export async function POST(request: Request) {
     // Step 4 (FALLBACK PROCEDURE): What if Resend silenty fails/crashes
     if (!resendSuccess) {
       console.warn(`[API] ⚠️ RESEND SDK FAILED OR THREW AN ERROR.`);
-      console.log(`[API] Triggering Fallback System: Scrubbing User & executing default Supabase auth flow...`);
       
       // Safety scrub: Wipe the ghost user so we can cleanly fire normal sign_up natively sending default emails!
       if (newUserId) {
@@ -137,7 +124,6 @@ export async function POST(request: Request) {
             return NextResponse.json({ success: false, message: 'Core architecture failure. Both Resend and Supabase backend failed.' }, { status: 500 });
         }
         
-        console.log(`[API] Fallback execution successful! Supabase dispatched default email.`);
         return NextResponse.json({ 
             success: true, 
             message: 'Custom mailer unavailable. Successfully triggered default fallback routing!',

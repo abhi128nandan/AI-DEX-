@@ -58,18 +58,20 @@ export async function proxy(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const isPublicRoute = 
-    request.nextUrl.pathname.startsWith('/login') || 
-    request.nextUrl.pathname.startsWith('/auth/callback');
+  const pathname = request.nextUrl.pathname;
 
-  const isAuthPage = request.nextUrl.pathname.startsWith('/login');
+  const isPublicRoute =
+    pathname.startsWith('/login') ||
+    pathname.startsWith('/auth/callback');
 
-  // If user is authenticated and trying to access login, redirect to dashboard/home
+  const isAuthPage = pathname.startsWith('/login');
+
+  // Authenticated user trying to access login → redirect to dashboard
   if (user && isAuthPage) {
     return NextResponse.redirect(new URL('/', request.url));
   }
 
-  // If user is not authenticated and trying to access a protected route, redirect to login
+  // Unauthenticated user trying to access a protected route → redirect to login
   if (!user && !isPublicRoute) {
     return NextResponse.redirect(new URL('/login', request.url));
   }
@@ -78,5 +80,16 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/((?!api|_next/static|_next/image|favicon.ico|images|.*\\.svg$).*)'],
+  matcher: [
+    /*
+     * Match all request paths except:
+     * - api (API routes handle their own auth)
+     * - _next/static (static files)
+     * - _next/image (image optimization)
+     * - favicon.ico
+     * - Static image assets (.svg, .png, .jpg, .jpeg, .gif, .webp)
+     */
+    '/((?!api|_next/static|_next/image|favicon\\.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+  ],
 };
+

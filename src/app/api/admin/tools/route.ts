@@ -7,15 +7,8 @@ async function verifyAdmin() {
     const supabase = await createSSRClient();
     const { data: { user }, error: authError } = await supabase.auth.getUser();
     
-    console.log('[verifyAdmin] Auth check:', { 
-      userId: user?.id, 
-      email: user?.email,
-      hasUser: !!user, 
-      authError: authError?.message 
-    });
     
     if (authError || !user) {
-      console.log('[verifyAdmin] No authenticated user');
       return false;
     }
 
@@ -26,13 +19,6 @@ async function verifyAdmin() {
       .eq('id', user.id)
       .maybeSingle();
 
-    console.log('[verifyAdmin] Profile query result:', { 
-      userId: user.id,
-      profile, 
-      profileError: profileError?.message,
-      hasProfile: !!profile,
-      role: profile?.role 
-    });
 
     if (profileError) {
       console.error('[verifyAdmin] Profile query error:', profileError);
@@ -46,7 +32,6 @@ async function verifyAdmin() {
     }
 
     const isAdmin = profile.role === 'admin';
-    console.log('[verifyAdmin] Final result:', { isAdmin, role: profile.role });
     
     return isAdmin;
   } catch (err: any) {
@@ -56,14 +41,11 @@ async function verifyAdmin() {
 }
 
 export async function GET(request: Request) {
-  console.log("[ADMIN ROUTE HIT] GET /api/admin/tools");
   
   try {
     const isAdmin = await verifyAdmin();
-    console.log("[ADMIN ROUTE] Admin verification result:", isAdmin);
     
     if (!isAdmin) {
-      console.log("[ADMIN ROUTE] Access denied - not admin");
       return NextResponse.json({ 
         success: false, 
         message: 'Forbidden: Admin access required. Ensure your profile has role="admin".' 
@@ -76,7 +58,6 @@ export async function GET(request: Request) {
     const limit = parseInt(searchParams.get('limit') || '50', 10);
     const offset = (page - 1) * limit;
 
-    console.log("[ADMIN ROUTE] Admin verified, fetching submissions", { page, limit, offset });
     const adminClient = createAdminClient();
     
     const startTime = Date.now();
@@ -113,7 +94,6 @@ export async function GET(request: Request) {
 
     const totalPages = Math.ceil((count || 0) / limit);
 
-    console.log("[ADMIN ROUTE] Success, returning", data?.length || 0, "submissions", { page, totalPages, total: count });
     return NextResponse.json({ 
       success: true, 
       data,
@@ -137,16 +117,13 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
-  console.log("[ADMIN ROUTE HIT] POST /api/admin/tools");
   let id: any;
   let action: any;
   
   try {
     const isAdmin = await verifyAdmin();
-    console.log("[ADMIN ROUTE] Admin verification result:", isAdmin);
     
     if (!isAdmin) {
-      console.log("[ADMIN ROUTE] Access denied - not admin");
       return NextResponse.json({ 
         success: false, 
         message: 'Forbidden: Admin access required. Ensure your profile has role="admin".' 
@@ -157,7 +134,6 @@ export async function POST(request: Request) {
     id = body.id;
     action = body.action;
     
-    console.log("[ADMIN ROUTE] Processing action:", { id, action });
 
     // Inline validation
     if (!id || typeof id !== 'string') {
@@ -206,7 +182,6 @@ export async function POST(request: Request) {
         throw updateError;
       }
       
-      console.log("[ADMIN ROUTE] Tool rejected successfully:", id);
       return NextResponse.json({ success: true, message: 'Tool rejected successfully.' }, { status: 200 });
     }
 
@@ -246,7 +221,6 @@ export async function POST(request: Request) {
          console.error("[SlowQuery]", { endpoint: '/api/admin/tools', duration, id, action, operation: 'approve' });
        }
        
-       console.log("[ADMIN ROUTE] Tool approved successfully:", id);
        return NextResponse.json({ success: true, message: 'Tool approved and published actively!' }, { status: 200 });
     }
 

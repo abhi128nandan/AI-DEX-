@@ -31,7 +31,7 @@ describe('Property 1: Bug Condition - Server Component with onClick Handler', ()
     const fs = await import('fs/promises');
     const path = await import('path');
     
-    const dashboardPath = path.join(process.cwd(), 'src/app/dashboard/page.tsx');
+    const dashboardPath = path.join(process.cwd(), 'src/app/(dashboard)/page.tsx');
     const dashboardSource = await fs.readFile(dashboardPath, 'utf-8');
     
     // Check 1: Does the file have "use client" directive?
@@ -100,7 +100,7 @@ describe('Property 1: Bug Condition - Server Component with onClick Handler', ()
     const fs = await import('fs/promises');
     const path = await import('path');
     
-    const dashboardPath = path.join(process.cwd(), 'src/app/dashboard/page.tsx');
+    const dashboardPath = path.join(process.cwd(), 'src/app/(dashboard)/page.tsx');
     const dashboardSource = await fs.readFile(dashboardPath, 'utf-8');
     
     // Check if dashboard imports RefreshButton
@@ -136,7 +136,7 @@ describe('Property 1: Bug Condition - Server Component with onClick Handler', ()
     ];
     
     // Check dashboard/page.tsx (the known violation)
-    const dashboardPath = path.join(process.cwd(), 'src/app/dashboard/page.tsx');
+    const dashboardPath = path.join(process.cwd(), 'src/app/(dashboard)/page.tsx');
     const dashboardSource = await fs.readFile(dashboardPath, 'utf-8');
     
     const hasUseClient = dashboardSource.includes("'use client'") || dashboardSource.includes('"use client"');
@@ -166,7 +166,7 @@ describe('Property 1: Bug Condition - Server Component with onClick Handler', ()
     const fs = await import('fs/promises');
     const path = await import('path');
     
-    const dashboardPath = path.join(process.cwd(), 'src/app/dashboard/page.tsx');
+    const dashboardPath = path.join(process.cwd(), 'src/app/(dashboard)/page.tsx');
     const dashboardSource = await fs.readFile(dashboardPath, 'utf-8');
     
     const hasUseClient = dashboardSource.includes("'use client'") || dashboardSource.includes('"use client"');
@@ -197,7 +197,7 @@ describe('Property 1: Bug Condition - Server Component with onClick Handler', ()
     const path = await import('path');
     
     // Check dashboard/page.tsx
-    const dashboardPath = path.join(process.cwd(), 'src/app/dashboard/page.tsx');
+    const dashboardPath = path.join(process.cwd(), 'src/app/(dashboard)/page.tsx');
     const dashboardSource = await fs.readFile(dashboardPath, 'utf-8');
     
     const hasUseClient = dashboardSource.includes("'use client'") || dashboardSource.includes('"use client"');
@@ -222,7 +222,7 @@ describe('Property 1: Bug Condition - Server Component with onClick Handler', ()
     const fs = await import('fs/promises');
     const path = await import('path');
     
-    const dashboardPath = path.join(process.cwd(), 'src/app/dashboard/page.tsx');
+    const dashboardPath = path.join(process.cwd(), 'src/app/(dashboard)/page.tsx');
     const dashboardSource = await fs.readFile(dashboardPath, 'utf-8');
     
     // Check that it still uses server-side Supabase client

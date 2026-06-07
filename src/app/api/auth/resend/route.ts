@@ -15,8 +15,6 @@ export async function POST(request: Request) {
     const body = await request.json();
     const { email } = body;
 
-    console.log(`[API] Processing resend request for: ${email}`);
-
     if (!email) {
       console.warn(`[API] Resend failed - Missing email`);
       return NextResponse.json({ success: false, message: 'Email is required.' }, { status: 400 });
@@ -45,9 +43,6 @@ export async function POST(request: Request) {
     }
 
     const { action_link } = linkData.properties;
-    console.log(`[API] Generated secure magic link successfully.`);
-
-    console.log(`[API] Dispatching magic link email via Resend to ${email}...`);
     const { data: emailData, error: resendError } = await resend.emails.send({
       from: 'AIDex Auth <onboarding@resend.dev>',
       to: [email],
@@ -70,7 +65,6 @@ export async function POST(request: Request) {
       return NextResponse.json({ success: false, message: resendError.message }, { status: 500 });
     }
 
-    console.log(`[API] Dispatch successful. Delivery ID: ${emailData?.id}`);
     
     // Cache the cooldown locally
     RESEND_COOLDOWN_MAP.set(email, Date.now());

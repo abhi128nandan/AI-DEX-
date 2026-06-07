@@ -42,14 +42,8 @@ export default function AdminDashboard() {
     setLoading(true);
     setError(null);
     try {
-      console.log("[Admin UI] Fetching pending submissions...", { page });
       const res = await fetch(`/api/admin/tools?page=${page}&limit=50`);
       
-      console.log("[Admin UI] Response received:", {
-        status: res.status,
-        ok: res.ok,
-        contentType: res.headers.get('content-type')
-      });
       
       // SAFE JSON PARSING: Handle non-JSON responses
       const text = await res.text();
@@ -79,7 +73,6 @@ export default function AdminDashboard() {
         return;
       }
       
-      console.log("[Admin UI] Success, received", data.data?.length || 0, "submissions");
       setTools(data.data || []);
       if (data.pagination) {
         setPagination(data.pagination);
@@ -100,17 +93,12 @@ export default function AdminDashboard() {
   const handleAction = async (id: string, action: 'approve' | 'reject') => {
     setProcessingId(id);
     try {
-      console.log(`[Admin UI] ${action} action for tool:`, id);
       const res = await fetch('/api/admin/tools', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id, action })
       });
       
-      console.log(`[Admin UI] ${action} response:`, {
-        status: res.status,
-        ok: res.ok
-      });
       
       // SAFE JSON PARSING: Handle non-JSON responses
       const text = await res.text();
@@ -131,7 +119,6 @@ export default function AdminDashboard() {
         throw new Error(data.message || `Failed to ${action} tool`);
       }
 
-      console.log(`[Admin UI] ${action} successful for tool:`, id);
       // Instantly remove processed item from the list iteratively
       setTools(prev => prev.filter(t => t.id !== id));
       

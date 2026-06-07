@@ -13,10 +13,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 import { useAnalytics } from '@/lib/useAnalytics';
 
-const getCategoryIcon = (category: string) => {
-  const IconComponent = CATEGORY_ICONS[normalizeCategory(category)];
-  return IconComponent || DEFAULT_CATEGORY_ICON;
-};
+
 
 const NAV_ITEMS = [
   { path: '/', label: 'Home', Icon: Home, color: 'from-purple-500 to-violet-500' },
