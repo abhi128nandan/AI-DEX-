@@ -6,121 +6,104 @@
 [![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white)](#)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-336791?style=for-the-badge&logo=postgresql&logoColor=white)](#)
 
-A technical showcase of a modern, full-stack Next.js application built for discovering, organizing, and interacting with a curated directory of tools. Designed to demonstrate scalable frontend architecture, secure authentication, and robust database management.
+AI-DEX is a community-driven platform for discovering, comparing, saving, and ranking AI tools. Built with Next.js, TypeScript, Supabase, and PostgreSQL, it provides fast search, category-based discovery, user authentication, voting, and personal tool collections.
 
 ---
 
 ## Live Demo
-*(Placeholder: Insert link to deployed application here)*
+[View Live Application](#) *(Deployment link pending)*
 
 ---
 
 ## Screenshots
 
-### Homepage
-*(Placeholder: Add homepage screenshot here)*
+### Homepage Dashboard
+![Homepage Dashboard](.github/assets/homepage.png)
 
 ### Search & Discovery
-*(Placeholder: Add search and filtering screenshot here)*
+![Search & Discovery](.github/assets/search.png)
 
-### Tool Details
-*(Placeholder: Add tool detail modal screenshot here)*
+### Tool Detail View
+![Tool Detail View](.github/assets/tool-detail.png)
 
-### Saved Tools
-*(Placeholder: Add saved tools collection screenshot here)*
+### Saved Tools Collection
+![Saved Tools Collection](.github/assets/saved-tools.png)
 
-### Submit Tool
-*(Placeholder: Add tool submission form screenshot here)*
-
----
-
-## Technical Highlights
-
-- **Next.js App Router**: Utilizes React Server Components (RSC) for initial fast data fetching and Client Components for rich interactivity.
-- **TypeScript**: End-to-end type safety protecting data models, API payloads, and component props.
-- **Supabase Authentication**: Integrated secure authentication with session management and route protection.
-- **PostgreSQL**: Relational database handling complex queries, aggregation, and foreign-key constraints.
-- **Voting System**: Real-time optimistic UI updates for tool upvoting, preventing layout shifts and ensuring perceived performance.
-- **Saved Tools System**: Authorized users can persist tools to their personal collections for later access.
-- **Search and Filtering**: Client-side state synchronization with URL parameters (`/?search=keyword`) for shareable, debounced search queries.
-- **Responsive Design**: Mobile-first Tailwind CSS implementation prioritizing accessibility and fluid layout adjustments.
-
----
-
-## Database Architecture
-
-The backend relies on a strictly-typed PostgreSQL schema managed via Supabase. Key entity relationships include:
-
-```mermaid
-erDiagram
-    USERS ||--o{ VOTES : casts
-    USERS ||--o{ SAVED_TOOLS : saves
-    USERS ||--o{ SUBMISSIONS : submits
-    TOOLS ||--o{ VOTES : receives
-    TOOLS ||--o{ SAVED_TOOLS : bookmarked_as
-    TOOLS ||--o{ SUBMISSIONS : originates_from
-
-    USERS {
-        uuid id PK
-        string email
-    }
-    TOOLS {
-        uuid id PK
-        string name
-        string category
-        int views_count
-        int votes_count
-    }
-    VOTES {
-        uuid user_id FK
-        uuid tool_id FK
-    }
-    SAVED_TOOLS {
-        uuid user_id FK
-        uuid tool_id FK
-    }
-    SUBMISSIONS {
-        uuid id PK
-        uuid user_id FK
-        string status
-    }
-```
+### Tool Submission Workflow
+![Tool Submission Workflow](.github/assets/submit-tool.png)
 
 ---
 
 ## System Architecture
 
 ```text
-User Request
-    ↓
-Next.js Frontend (React Server Components + Client Hooks)
-    ↓
-Supabase Database Client & Auth
-    ├ Authentication (Session Management)
-    ├ PostgreSQL Database (Tools, Votes, Saves, Profiles)
-    └ Storage (Optional asset hosting)
+User
+│
+▼
+Next.js App Router
+│
+├─ Server Components
+├─ Client Components
+│
+▼
+Supabase
+├─ Authentication
+├─ PostgreSQL
+└─ Storage
+│
+▼
+AI-DEX Platform
 ```
+
+---
+
+## Database Architecture
+
+```text
+Users
+│
+├── Saved Tools
+├── Votes
+└── Submissions
+
+Tools
+│
+├── Categories
+├── Tags
+└── Votes
+```
+
+---
+
+## Key Learnings
+
+* Building authenticated applications with Supabase
+* Managing Server and Client Components in Next.js
+* Designing relational database schemas
+* Implementing URL-synchronized search and filtering
+* Creating responsive interfaces with Tailwind CSS
+* Handling user-generated content workflows
+
+---
+
+## Technical Highlights
+
+- **Next.js App Router**: Utilizes React Server Components (RSC) for fast initial data fetching and Client Components for interactivity.
+- **TypeScript**: End-to-end type safety protecting data models, API payloads, and component props.
+- **Supabase Authentication**: Integrated secure authentication with session management and route protection.
+- **PostgreSQL**: Relational database handling complex queries, aggregation, and foreign-key constraints.
+- **Voting System**: Interactive UI allowing authenticated users to upvote tools and influence community rankings.
+- **Saved Tools System**: Authorized users can persist tools to their personal collections for later access.
+- **Search and Filtering**: Client-side state synchronization with URL parameters (`/?search=keyword`) for shareable search queries.
+- **Responsive Design**: Mobile-first Tailwind CSS implementation prioritizing accessibility and fluid layout adjustments.
 
 ---
 
 ## Challenges Solved
 
 - **State Synchronization**: Maintained UI consistency between URL search parameters and client-side filtering without redundant component re-renders.
-- **Optimistic UI Updates**: Designed custom React hooks (`use-vote`, `use-save`) that immediately reflect user actions locally while securely verifying the request against the database in the background.
-- **Layout Shift Prevention**: Engineered exact dimensions for skeleton loading states (e.g., `DashboardSkeleton`) to flawlessly match the resolved UI, ensuring a jank-free user experience.
+- **Layout Shift Prevention**: Engineered exact dimensions for skeleton loading states to match the resolved UI, ensuring a stable user experience.
 - **Secure Data Access**: Leveraged Supabase Row Level Security (RLS) policies to ensure users can only modify their own votes and saved tool collections.
-
----
-
-## Deployment
-
-### Vercel Deployment
-For production hosting, deploying to Vercel is highly recommended to leverage native Next.js optimizations.
-
-1. Push your code to a GitHub repository.
-2. Import the project in Vercel.
-3. Add the required environment variables (see below) in the Vercel dashboard.
-4. Deploy.
 
 ---
 
@@ -128,7 +111,7 @@ For production hosting, deploying to Vercel is highly recommended to leverage na
 
 ### 1. Clone the repository
 ```bash
-git clone <repo-url>
+git clone https://github.com/abhi128nandan/AI-DEX-.git
 cd aidex-app
 ```
 
@@ -184,12 +167,44 @@ npm run test:watch # watch mode
 
 ---
 
-## Production Deployment
+## Deployment
+
+### Vercel Deployment
+For production hosting, deploying to Vercel is highly recommended to leverage native Next.js optimizations.
+
+1. Push your code to a GitHub repository.
+2. Import the project in Vercel.
+3. Add the required environment variables (see below) in the Vercel dashboard.
+4. Deploy.
 
 ```bash
 npm run build
 npm start
 ```
+
+---
+
+## Deployment Checklist
+
+* Environment variables configured
+* Supabase project configured
+* SQL scripts executed
+* Production build passes
+* Authentication flow verified
+* Tool submission flow verified
+
+---
+
+## Repository Topics
+
+* nextjs
+* typescript
+* supabase
+* postgresql
+* tailwindcss
+* ai-tools
+* tool-discovery
+* full-stack
 
 ---
 
