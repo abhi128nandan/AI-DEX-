@@ -6,24 +6,12 @@
 [![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white)](#)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-336791?style=for-the-badge&logo=postgresql&logoColor=white)](#)
 
-A modern discovery platform to find, compare, and organize the best AI tools across every category.
-
-AI-DEX simplifies the rapidly expanding AI landscape by providing a curated, searchable directory of AI tools. Whether you're looking for the latest LLM wrappers or specialized AI agents, AI-DEX helps you discover the right tool for your workflow through a community-driven platform featuring real-time search, category browsing, and user voting.
+A technical showcase of a modern, full-stack Next.js application built for discovering, organizing, and interacting with a curated directory of tools. Designed to demonstrate scalable frontend architecture, secure authentication, and robust database management.
 
 ---
 
-## Features
-
-- **AI Tool Discovery**: Browse a comprehensive directory of AI tools.
-- **Search and Filtering**: Instantly search tools by name, description, or tags.
-- **Category Browsing**: Navigate tools across predefined categories (e.g., Code, Writing, Image).
-- **Trending Tools**: Discover what's hot right now based on community engagement.
-- **Top Rated Tools**: Find the highest-quality tools backed by user votes.
-- **User Authentication**: Secure signup and login via Supabase.
-- **Save Favorites**: Bookmark your favorite tools to a personal collection.
-- **Community Voting**: Upvote tools to help them gain visibility.
-- **Tool Submission**: Submit new tools to the directory for community review.
-- **Responsive Design**: Beautiful, modern interface optimized for all devices.
+## Live Demo
+*(Placeholder: Insert link to deployed application here)*
 
 ---
 
@@ -46,9 +34,61 @@ AI-DEX simplifies the rapidly expanding AI landscape by providing a curated, sea
 
 ---
 
-## Architecture
+## Technical Highlights
 
-AI-DEX is built on a modern, serverless architecture utilizing Next.js App Router and Supabase.
+- **Next.js App Router**: Utilizes React Server Components (RSC) for initial fast data fetching and Client Components for rich interactivity.
+- **TypeScript**: End-to-end type safety protecting data models, API payloads, and component props.
+- **Supabase Authentication**: Integrated secure authentication with session management and route protection.
+- **PostgreSQL**: Relational database handling complex queries, aggregation, and foreign-key constraints.
+- **Voting System**: Real-time optimistic UI updates for tool upvoting, preventing layout shifts and ensuring perceived performance.
+- **Saved Tools System**: Authorized users can persist tools to their personal collections for later access.
+- **Search and Filtering**: Client-side state synchronization with URL parameters (`/?search=keyword`) for shareable, debounced search queries.
+- **Responsive Design**: Mobile-first Tailwind CSS implementation prioritizing accessibility and fluid layout adjustments.
+
+---
+
+## Database Architecture
+
+The backend relies on a strictly-typed PostgreSQL schema managed via Supabase. Key entity relationships include:
+
+```mermaid
+erDiagram
+    USERS ||--o{ VOTES : casts
+    USERS ||--o{ SAVED_TOOLS : saves
+    USERS ||--o{ SUBMISSIONS : submits
+    TOOLS ||--o{ VOTES : receives
+    TOOLS ||--o{ SAVED_TOOLS : bookmarked_as
+    TOOLS ||--o{ SUBMISSIONS : originates_from
+
+    USERS {
+        uuid id PK
+        string email
+    }
+    TOOLS {
+        uuid id PK
+        string name
+        string category
+        int views_count
+        int votes_count
+    }
+    VOTES {
+        uuid user_id FK
+        uuid tool_id FK
+    }
+    SAVED_TOOLS {
+        uuid user_id FK
+        uuid tool_id FK
+    }
+    SUBMISSIONS {
+        uuid id PK
+        uuid user_id FK
+        string status
+    }
+```
+
+---
+
+## System Architecture
 
 ```text
 User Request
@@ -63,28 +103,24 @@ Supabase Database Client & Auth
 
 ---
 
-## Tech Stack
+## Challenges Solved
 
-| Technology | Role |
-| --- | --- |
-| **Next.js** | React framework for Server-Side Rendering and routing |
-| **TypeScript** | Type-safe JavaScript for robust development |
-| **Tailwind CSS** | Utility-first styling and responsive design |
-| **Supabase** | Backend-as-a-Service (Auth, Database) |
-| **PostgreSQL** | Relational database (managed by Supabase) |
-| **Resend** | Transactional email provider for authentication (optional fallback) |
+- **State Synchronization**: Maintained UI consistency between URL search parameters and client-side filtering without redundant component re-renders.
+- **Optimistic UI Updates**: Designed custom React hooks (`use-vote`, `use-save`) that immediately reflect user actions locally while securely verifying the request against the database in the background.
+- **Layout Shift Prevention**: Engineered exact dimensions for skeleton loading states (e.g., `DashboardSkeleton`) to flawlessly match the resolved UI, ensuring a jank-free user experience.
+- **Secure Data Access**: Leveraged Supabase Row Level Security (RLS) policies to ensure users can only modify their own votes and saved tool collections.
 
 ---
 
-## Project Structure
+## Deployment
 
-A brief overview of the project's primary directories:
+### Vercel Deployment
+For production hosting, deploying to Vercel is highly recommended to leverage native Next.js optimizations.
 
-- `src/app/` - Next.js App Router pages and API routes.
-- `src/components/` - Reusable React components (UI elements, layout, tool panels).
-- `src/lib/` - Shared utilities, database schema definitions, and Supabase client configurations.
-- `public/` - Static assets, images, and icons.
-- `supabase_scripts/` - SQL migrations and database initialization scripts (schema, rate limits).
+1. Push your code to a GitHub repository.
+2. Import the project in Vercel.
+3. Add the required environment variables (see below) in the Vercel dashboard.
+4. Deploy.
 
 ---
 
@@ -154,17 +190,6 @@ npm run test:watch # watch mode
 npm run build
 npm start
 ```
-
-For production hosting, deploying to Vercel is highly recommended for seamless Next.js support. Set your environment variables in your hosting dashboard before deploying.
-
----
-
-## Future Roadmap
-
-- Advanced tool comparison and side-by-side matrices
-- Personalized tool recommendations based on user saves
-- Enhanced analytics for tool creators and submitters
-- Expanded discovery features (developer APIs, integration tagging)
 
 ---
 
