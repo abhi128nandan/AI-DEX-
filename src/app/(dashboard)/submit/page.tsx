@@ -71,9 +71,9 @@ export default function SubmitPage() {
         <div className="w-20 h-20 bg-emerald-500/20 text-emerald-400 rounded-full flex items-center justify-center border border-emerald-500/30 mb-6 shadow-[0_0_40px_rgba(16,185,129,0.2)]">
           <CheckCircle className="w-10 h-10" />
         </div>
-        <h1 className="text-4xl font-extrabold text-white mb-4 tracking-tight">Transmission Received</h1>
+        <h1 className="text-4xl font-extrabold text-white mb-4 tracking-tight">Tool Submitted</h1>
         <p className="text-lg text-slate-400 max-w-md mb-8 leading-relaxed">
-          Your AI tool has been injected into our moderation queue. Our team reviews all deployments to maintain FAANG-level discovery quality.
+          Thanks for contributing. We review every submission and will notify you when it&apos;s approved, usually within 48 hours.
         </p>
         <div className="flex gap-4">
             <Link 

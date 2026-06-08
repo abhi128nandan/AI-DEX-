@@ -19,7 +19,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark" suppressHydrationWarning>
-      <body suppressHydrationWarning className={`${inter.variable} ${outfit.variable} font-sans min-h-screen bg-[#0a0a0f] text-slate-100 flex flex-col antialiased selection:bg-purple-500/30 selection:text-purple-200 overflow-x-hidden`}>
+      <body suppressHydrationWarning className={`${inter.variable} ${outfit.variable} font-sans min-h-screen bg-[var(--surface-base)] text-slate-100 flex flex-col antialiased selection:bg-purple-500/30 selection:text-purple-200 overflow-x-hidden`}>
         <ErrorBoundary>
           <QueryProvider>
             {children}

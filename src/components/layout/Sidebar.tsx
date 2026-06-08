@@ -34,11 +34,14 @@ export default function Sidebar() {
   const [isLocked, setIsLocked] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [hasBeenExpanded, setHasBeenExpanded] = useState(false);
 
   useEffect(() => {
     setMounted(true);
     const saved = localStorage.getItem('sidebar-locked');
     if (saved === 'true') setIsLocked(true);
+    const expanded = localStorage.getItem('sidebar-expanded-once');
+    if (expanded === 'true') setHasBeenExpanded(true);
   }, []);
 
   // Close mobile sidebar on route change
@@ -113,13 +116,22 @@ export default function Sidebar() {
               <X className="w-5 h-5" />
             </button>
           ) : (
-            <button
-              onClick={toggleLock}
-              className={`p-1.5 rounded-lg text-slate-500 hover:text-white hover:bg-white/10 transition-all ${expanded ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
-              title={isLocked ? "Unpin Sidebar" : "Pin Sidebar"}
-            >
-              {isLocked ? <PanelLeftClose className="w-4 h-4" /> : <PanelRightClose className="w-4 h-4" />}
-            </button>
+            !expanded ? (
+              <div className="relative p-1.5">
+                <PanelRightClose className="w-4 h-4 text-slate-700" />
+                {!hasBeenExpanded && (
+                  <span className="absolute top-0.5 right-0.5 w-1.5 h-1.5 bg-purple-500 rounded-full animate-pulse" />
+                )}
+              </div>
+            ) : (
+              <button
+                onClick={toggleLock}
+                className="p-1.5 rounded-lg text-slate-500 hover:text-white hover:bg-white/10 transition-all"
+                title={isLocked ? "Unpin Sidebar" : "Pin Sidebar"}
+              >
+                {isLocked ? <PanelLeftClose className="w-4 h-4" /> : <PanelRightClose className="w-4 h-4" />}
+              </button>
+            )
           )}
         </div>
 
@@ -275,7 +287,13 @@ export default function Sidebar() {
 
       {/* === DESKTOP SIDEBAR === */}
       <aside
-        onMouseEnter={() => setIsHovered(true)}
+        onMouseEnter={() => {
+          setIsHovered(true);
+          if (!hasBeenExpanded) {
+            setHasBeenExpanded(true);
+            localStorage.setItem('sidebar-expanded-once', 'true');
+          }
+        }}
         onMouseLeave={() => setIsHovered(false)}
         className={`fixed left-0 top-16 bottom-0 hidden lg:flex flex-col overflow-hidden border-r border-white/[0.06] z-50 py-5 transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
           isExpanded 

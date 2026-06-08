@@ -5,7 +5,7 @@ import AuthButton from '../auth/AuthButton';
 
 export default function Navbar() {
   return (
-    <nav className="fixed top-0 z-50 w-full bg-[#0a0a0f]/80 backdrop-blur-xl border-b border-white/[0.08] shadow-[0_1px_40px_-20px_rgba(124,58,237,0.3)]">
+    <nav className="fixed top-0 z-50 w-full bg-[var(--surface-base)]/80 backdrop-blur-xl border-b border-white/[0.08] shadow-[0_1px_40px_-20px_rgba(124,58,237,0.3)]">
       <div className="mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         <div className="flex items-center gap-8 lg:w-64 ml-12 lg:ml-0">
           <Link href="/" className="flex items-center gap-2.5 group">

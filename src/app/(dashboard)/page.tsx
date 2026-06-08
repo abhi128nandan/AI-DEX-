@@ -1,6 +1,6 @@
 // import { CATEGORIES, CATEGORY_COUNTS } from '@/lib/config/tool-categories';
 import { HeroHighlight } from '@/components/ui/HeroHighlight';
-import { ArrowRight, Sparkles } from 'lucide-react';
+import { Sparkles } from 'lucide-react';
 import Link from 'next/link';
 import { createClient } from '@/lib/supabase/server';
 import RefreshButton from '@/components/ui/RefreshButton';
@@ -92,52 +92,32 @@ async function DashboardContent() {
   if (toolsList.length === 0) {
     return (
       <div className="min-h-screen flex items-center justify-center px-4">
-        <div className="text-center space-y-6 max-w-2xl">
-          <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-purple-500/10 border border-purple-500/20 mb-2">
-            <span className="text-4xl">📦</span>
+        <div className="text-center space-y-5 max-w-md">
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-purple-500/10 border border-purple-500/20 mb-2">
+            <span className="text-3xl">🔍</span>
           </div>
-          <h1 className="text-3xl font-bold text-white">No Tools Found</h1>
-          <p className="text-slate-400 text-lg">
-            The tools database is empty. You need to seed the database with initial data.
+          <h1 className="text-2xl font-bold text-white">No tools yet</h1>
+          <p className="text-slate-400 text-base leading-relaxed">
+            The directory is being built. Check back soon, or be the first to contribute.
           </p>
-          <div className="bg-purple-500/10 border border-purple-500/20 rounded-xl p-6 text-left space-y-4">
-            <h3 className="font-semibold text-white">To fix this:</h3>
-            <ol className="list-decimal list-inside space-y-2 text-sm text-slate-300">
-              <li>Open Supabase SQL Editor</li>
-              <li>Run the seed script: <code className="bg-black/40 px-2 py-1 rounded text-purple-400">supabase-seed-tools.sql</code></li>
-              <li>Refresh this page</li>
-            </ol>
-          </div>
-          <div className="flex gap-4 justify-center">
-            <Link 
-              href="/admin"
-              className="px-6 py-3 bg-purple-600 hover:bg-purple-500 text-white rounded-xl font-semibold transition-colors"
+          <div className="flex gap-3 justify-center pt-2">
+            <Link
+              href="/submit"
+              className="px-5 py-2.5 bg-purple-600 hover:bg-purple-500 text-white rounded-xl font-semibold transition-colors text-sm"
             >
-              Go to Admin Panel
+              Submit a Tool
             </Link>
-            <RefreshButton className="px-6 py-3 bg-white/5 hover:bg-white/10 text-white rounded-xl font-semibold transition-colors border border-white/10">
-              Refresh Page
-            </RefreshButton>
           </div>
         </div>
       </div>
     );
   }
 
-  // Derive dynamic category counts from fetched tools
-  const categoryCounts = toolsList.reduce((acc, tool) => {
-    if (tool.category) {
-      acc[tool.category] = (acc[tool.category] || 0) + 1;
-    }
-    return acc;
-  }, {} as Record<string, number>);
-
-  const activeCategories = Object.keys(categoryCounts).sort();
 
   return (
     <div className="pb-12 min-h-screen flex flex-col">
       {/* Dynamic Interactive Hero Area */}
-      <div className="min-h-[40rem] relative w-full flex items-center justify-center py-24">
+      <div className="min-h-[22rem] relative w-full flex items-center justify-center py-14">
         <HeroHighlight containerClassName="w-full h-full absolute inset-0">
           <div className="relative z-10 flex flex-col items-center justify-center text-center px-4 w-full">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.04] border border-white/[0.08] mb-8 text-[13px] font-semibold text-purple-300 shadow-xl shadow-purple-500/5 backdrop-blur-md">
@@ -153,35 +133,14 @@ async function DashboardContent() {
             </h1>
             
             <p className="text-lg md:text-xl text-slate-500 max-w-2xl mx-auto mb-10 leading-relaxed font-medium">
-              Explore {toolsList.length}+ curated AI tools, read reviews, and compare features. 
-              Updated daily with the newest innovations.
+              Explore {toolsList.length}+ curated AI tools, voted on by the community.
+              Discover what&apos;s trending, top-rated, or newly added.
             </p>
-
-            <div className="flex flex-wrap justify-center gap-2 max-w-3xl mx-auto">
-              {activeCategories.slice(0, 8).map(category => (
-                <Link 
-                  key={category}
-                  href={`/categories/${category.toLowerCase().replace(/ /g, '-')}`}
-                  className="group px-4 py-2 rounded-xl bg-white/[0.03] border border-white/[0.06] hover:border-purple-500/40 hover:bg-purple-500/[0.08] text-sm font-medium transition-all duration-200 hover:shadow-lg hover:shadow-purple-500/10"
-                >
-                  <span className="text-slate-400 group-hover:text-white transition-colors">{category}</span>
-                  <span className="ml-1.5 text-[10px] font-mono text-slate-600 group-hover:text-purple-400 transition-colors">
-                    {categoryCounts[category]}
-                  </span>
-                </Link>
-              ))}
-              <Link 
-                href="/categories"
-                className="px-4 py-2 rounded-xl bg-gradient-to-r from-purple-600/80 to-indigo-600/80 hover:from-purple-500 hover:to-indigo-500 text-white text-sm font-semibold transition-all flex items-center gap-1 shadow-lg shadow-purple-500/20"
-              >
-                View all <ArrowRight className="w-4 h-4" />
-              </Link>
-            </div>
           </div>
         </HeroHighlight>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10 pt-8">
         <ToolsExplorer tools={toolsList} isAuthenticated={isAuthenticated} savedToolIds={savedToolIds} />
       </div>
 

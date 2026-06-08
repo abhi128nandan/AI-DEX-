@@ -69,7 +69,7 @@ function ToolCardInner({ tool, index, isAuthenticated = false, isSaved }: ToolCa
       {/* Animated gradient border glow on hover */}
       <div className="absolute -inset-[1px] bg-gradient-to-br from-purple-600/40 via-cyan-600/30 to-purple-600/40 rounded-2xl blur-md opacity-0 group-hover:opacity-25 transition-all duration-500 pointer-events-none" />
       
-      <div className="relative flex flex-col h-full rounded-2xl bg-[#0c0c14] transition-all duration-300 overflow-hidden border border-white/[0.06] group-hover:border-white/[0.12] shadow-lg shadow-black/30 group-hover:shadow-xl group-hover:shadow-purple-900/10">
+      <div className="relative flex flex-col h-full rounded-2xl bg-[var(--surface-raised)] transition-all duration-300 overflow-hidden border border-white/[0.06] group-hover:border-white/[0.12] shadow-lg shadow-black/30 group-hover:shadow-xl group-hover:shadow-purple-900/10">
         
         {/* Subtle top highlight line */}
         <div className="absolute inset-x-0 top-0 h-px w-2/3 mx-auto bg-gradient-to-r from-transparent via-white/[0.08] to-transparent" />
@@ -86,7 +86,7 @@ function ToolCardInner({ tool, index, isAuthenticated = false, isSaved }: ToolCa
                 className="w-11 h-11 rounded-xl flex items-center justify-center border border-white/[0.06] shrink-0 overflow-hidden relative transition-transform duration-300 group-hover:scale-105 shadow-md"
                 style={!finalLogoUrl || imageError ? {
                   background: `linear-gradient(135deg, ${avatarGradient.from}, ${avatarGradient.to})`
-                } : { background: '#111119' }}
+                } : { background: 'var(--surface-overlay)' }}
               >
                 {!imageError && finalLogoUrl ? (
                   <Image 
@@ -137,12 +137,17 @@ function ToolCardInner({ tool, index, isAuthenticated = false, isSaved }: ToolCa
           <div className="flex items-center justify-between mt-auto pt-3 border-t border-white/[0.04] relative z-10">
             <div className="flex flex-wrap gap-1">
               {(tool.tags || []).slice(0, 3).map(tag => (
-                <span 
-                  key={tag} 
-                  className="text-[10px] text-slate-500/80 bg-white/[0.03] hover:bg-white/[0.06] hover:text-slate-300 transition-colors px-1.5 py-0.5 rounded font-medium"
+                <button
+                  key={tag}
+                  data-interactive
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    router.push(`/?search=${encodeURIComponent(tag)}`, { scroll: false });
+                  }}
+                  className="text-[10px] text-slate-500/80 bg-white/[0.03] hover:bg-purple-500/20 hover:text-purple-300 transition-colors px-1.5 py-0.5 rounded font-medium cursor-pointer"
                 >
                   #{tag}
-                </span>
+                </button>
               ))}
             </div>
             <div className="flex items-center gap-2 shrink-0">

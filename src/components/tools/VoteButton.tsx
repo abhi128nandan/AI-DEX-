@@ -37,7 +37,7 @@ export default function VoteButton({ toolId, initialVotes, initialDownvotes = 0,
         className={`flex items-center gap-0.5 border rounded-lg overflow-hidden transition-all shadow-sm ${
           userVote === 'up' ? 'border-purple-500/50 bg-purple-500/10' : 
           userVote === 'down' ? 'border-rose-500/50 bg-rose-500/10' : 
-          'border-white/10 bg-[#12121c]'
+          'border-white/10 bg-[var(--surface-overlay)]'
       }`}>
         <button 
           onClick={(e) => onVoteClick(e, 'up')}

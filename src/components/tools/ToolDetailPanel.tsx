@@ -48,7 +48,7 @@ async function fetchToolBySlug(slug: string): Promise<Tool | null> {
 // ═══════════════════════════════════════════
 function ModalSkeleton({ onClose }: { onClose: () => void }) {
   return (
-    <div className="flex flex-col h-full bg-[#0a0a10]">
+    <div className="flex flex-col h-full bg-[var(--surface-raised)]">
       {/* Header Skeleton */}
       <div className="shrink-0 flex items-center justify-between px-6 py-4 border-b border-white/[0.06]">
         <div className="flex items-center gap-3">
@@ -184,7 +184,7 @@ function ResolvedPanelContent({
 
   if (!tool) {
     return (
-      <div className="flex flex-col h-full bg-[#0a0a10]">
+      <div className="flex flex-col h-full bg-[var(--surface-raised)]">
         <div className="shrink-0 flex items-center justify-between px-6 py-4 border-b border-white/[0.06]">
           <div className="h-6 w-32" />
           <button onClick={onClose} className="p-2 rounded-xl hover:bg-white/10 text-slate-400 hover:text-white transition-all">
@@ -201,7 +201,7 @@ function ResolvedPanelContent({
   }
 
   return (
-    <div className="flex flex-col h-full bg-[#0a0a10]">
+    <div className="flex flex-col h-full bg-[var(--surface-raised)]">
       <RecentlyViewedTracker tool={tool} />
       {/* Header */}
       <div className="shrink-0 flex items-center justify-between px-6 py-4 border-b border-white/[0.06]">
@@ -210,7 +210,7 @@ function ResolvedPanelContent({
             className="w-10 h-10 rounded-xl flex items-center justify-center border border-white/10 shrink-0 overflow-hidden relative"
             style={!logoUrl || imageError ? { 
               background: `linear-gradient(135deg, ${avatarGradient.from}, ${avatarGradient.to})` 
-            } : { background: '#12121c' }}
+            } : { background: 'var(--surface-overlay)' }}
           >
             {logoUrl && !imageError ? (
               <Image
@@ -263,7 +263,7 @@ function ResolvedPanelContent({
                   className="w-20 h-20 rounded-2xl flex items-center justify-center border border-white/10 shrink-0 overflow-hidden relative shadow-xl"
                   style={!logoUrl || imageError ? {
                     background: `linear-gradient(135deg, ${avatarGradient.from}, ${avatarGradient.to})`
-                  } : { background: '#12121c' }}
+                  } : { background: 'var(--surface-overlay)' }}
                 >
                   {logoUrl && !imageError ? (
                     <Image
@@ -355,7 +355,7 @@ function ResolvedPanelContent({
       </div>
 
       {/* Footer CTA */}
-      <div className="shrink-0 px-6 py-4 border-t border-white/[0.06] flex items-center gap-3 bg-[#0a0a10]">
+      <div className="shrink-0 px-6 py-4 border-t border-white/[0.06] flex items-center gap-3 bg-[var(--surface-raised)]">
         {tool.website_url && (
           <a
             href={tool.website_url}
@@ -431,7 +431,7 @@ export default function ToolDetailPanel() {
             animate={{ x: 0, opacity: 1 }}
             exit={{ x: '100%', opacity: 0.9 }}
             transition={{ type: 'spring', stiffness: 380, damping: 32 }}
-            className="fixed right-0 top-0 bottom-0 w-full sm:w-[520px] z-[110] bg-[#0a0a10] border-l border-white/[0.06] flex flex-col shadow-[-8px_0_40px_rgba(0,0,0,0.5)]"
+            className="fixed right-0 top-0 bottom-0 w-full sm:w-[520px] z-[110] bg-[var(--surface-raised)] border-l border-white/[0.06] flex flex-col shadow-[-8px_0_40px_rgba(0,0,0,0.5)]"
           >
             <ResolvedPanelContent previewSlug={previewSlug} onClose={handleClose} />
           </motion.div>
