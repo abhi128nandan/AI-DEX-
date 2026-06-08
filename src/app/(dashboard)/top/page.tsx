@@ -9,7 +9,8 @@ export default async function TopPage() {
   const { data: tools } = await supabase
     .from('tools')
     .select(TOOL_SELECT)
-    .order('votes_count', { ascending: false });
+    .order('votes_count', { ascending: false })
+    .limit(50);
   
   const topRated = validateTools(tools || []);
 

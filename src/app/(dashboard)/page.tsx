@@ -11,15 +11,10 @@ import { Suspense } from 'react';
 function DashboardSkeleton() {
   return (
     <div className="pb-12 min-h-screen flex flex-col w-full">
-      <div className="min-h-[40rem] flex flex-col items-center justify-center py-24 animate-pulse">
+      <div className="min-h-[22rem] flex flex-col items-center justify-center py-14 animate-pulse">
         <div className="w-48 h-8 bg-white/5 rounded-full mb-8"></div>
         <div className="w-[60%] max-w-2xl h-24 bg-white/5 rounded-2xl mb-6"></div>
         <div className="w-[40%] max-w-md h-12 bg-white/5 rounded-xl mb-10"></div>
-        <div className="flex flex-wrap justify-center gap-2 max-w-3xl">
-          {[...Array(7)].map((_, i) => (
-            <div key={i} className="w-24 h-10 bg-white/5 rounded-xl"></div>
-          ))}
-        </div>
       </div>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-pulse">

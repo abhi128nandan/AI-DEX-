@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation';
 import { 
   Home, Flame, Clock, Trophy,
   PanelLeftClose, PanelRightClose, Menu, X,
-  History, Bookmark
+  Bookmark
 } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -23,7 +23,6 @@ const NAV_ITEMS = [
 ];
 
 const FOR_YOU_ITEMS = [
-  { path: '/history', label: 'Recently Viewed', Icon: History, color: 'from-blue-500 to-cyan-500' },
   { path: '/saved', label: 'Saved Tools', Icon: Bookmark, color: 'from-pink-500 to-rose-500' }
 ];
 

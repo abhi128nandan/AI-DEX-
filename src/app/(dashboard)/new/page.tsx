@@ -9,12 +9,13 @@ export default async function NewPage() {
   const { data: tools } = await supabase
     .from('tools')
     .select(TOOL_SELECT)
-    .order('created_at', { ascending: false });
+    .order('created_at', { ascending: false })
+    .limit(50);
   
   const newTools = validateTools(tools || []);
 
   return (
-    <div className="space-y-12 animate-fade-in min-h-[60vh]">
+    <div className="space-y-12 animate-fade-in min-h-[60vh] max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div className="text-center space-y-4 pt-8">
         <div className="inline-flex items-center justify-center bg-emerald-500/10 p-4 rounded-full mb-4">
           <Clock className="w-8 h-8 text-emerald-400" />

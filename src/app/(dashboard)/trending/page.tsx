@@ -8,7 +8,8 @@ export default async function TrendingPage() {
   const { data: { session } } = await supabase.auth.getSession();
   const { data: tools } = await supabase
     .from('tools')
-    .select(TOOL_SELECT);
+    .select(TOOL_SELECT)
+    .limit(50);
   
   const toolsList = validateTools(tools || []);
   

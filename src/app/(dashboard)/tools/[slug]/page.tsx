@@ -11,7 +11,7 @@ import ClientFallbackImage from '@/components/ui/ClientFallbackImage';
 import { createClient } from '@/lib/supabase/server';
 import { createClient as createBrowserClient } from '@supabase/supabase-js';
 import { TOOL_SELECT, validateTools, isValidTool } from '@/lib/database/schema';
-import RecentlyViewedTracker from '@/components/tools/RecentlyViewedTracker';
+
 
 /**
  * Dynamic SEO metadata per tool page.
@@ -184,8 +184,6 @@ async function ToolPageContent(props: { params: Promise<{ slug: string }> }) {
 
   return (
     <div className="max-w-5xl mx-auto space-y-12 animate-fade-in relative z-20">
-      <RecentlyViewedTracker tool={tool as any} />
-      
       <div className="pt-6">
         <Link href="/" className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors">
           <ArrowLeft className="w-4 h-4" /> Back to Directory

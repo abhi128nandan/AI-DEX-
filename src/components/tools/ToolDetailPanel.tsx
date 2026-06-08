@@ -17,7 +17,6 @@ import { getSupabaseClient } from '@/lib/supabase/client';
 import { TOOL_SELECT } from '@/lib/database/schema';
 import VoteButton from './VoteButton';
 import SaveButton from './SaveButton';
-import RecentlyViewedTracker from './RecentlyViewedTracker';
 import ToolComments from './ToolComments';
 
 // ═══════════════════════════════════════════
@@ -98,6 +97,7 @@ function ResolvedPanelContent({
   onClose: () => void;
 }) {
   const { track } = useAnalytics();
+  const router = useRouter();
   const scrollRef = useRef<HTMLDivElement>(null);
   const [imageError, setImageError] = useState(false);
   const [showDescription, setShowDescription] = useState(false);
@@ -202,7 +202,6 @@ function ResolvedPanelContent({
 
   return (
     <div className="flex flex-col h-full bg-[var(--surface-raised)]">
-      <RecentlyViewedTracker tool={tool} />
       {/* Header */}
       <div className="shrink-0 flex items-center justify-between px-6 py-4 border-b border-white/[0.06]">
         <div className="flex items-center gap-3 min-w-0">
@@ -335,12 +334,16 @@ function ResolvedPanelContent({
             </h4>
             <div className="flex flex-wrap gap-1.5">
               {(tool.tags ?? []).map((tag: string) => (
-                <span
+                <button
                   key={tag}
-                  className="text-[11px] px-2.5 py-1 rounded-md bg-white/[0.04] text-slate-400 font-medium hover:bg-white/[0.08] hover:text-slate-200 transition-colors cursor-default"
+                  onClick={() => {
+                    onClose();
+                    router.push(`/?search=${encodeURIComponent(tag)}`, { scroll: false });
+                  }}
+                  className="text-[11px] px-2.5 py-1 rounded-md bg-white/[0.04] text-slate-400 font-medium hover:bg-white/[0.08] hover:text-slate-200 transition-colors cursor-pointer"
                 >
                   #{tag}
-                </span>
+                </button>
               ))}
             </div>
           </motion.div>

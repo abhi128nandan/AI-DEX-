@@ -46,6 +46,15 @@ export default function ToolsExplorer({ tools, isAuthenticated = false, savedToo
     return () => clearTimeout(timer);
   }, [searchQuery]);
 
+  // Sync URL changes back to state (e.g., from tag clicks)
+  useEffect(() => {
+    const urlSearch = searchParams.get('search') || '';
+    if (urlSearch !== debouncedSearch) {
+      setSearchQuery(urlSearch);
+      setDebouncedSearch(urlSearch);
+    }
+  }, [searchParams, debouncedSearch]);
+
   // Update URL when filters change
   useEffect(() => {
     const params = new URLSearchParams();
@@ -82,7 +91,8 @@ export default function ToolsExplorer({ tools, isAuthenticated = false, savedToo
       const query = debouncedSearch.toLowerCase();
       result = result.filter(tool => 
         tool.name.toLowerCase().includes(query) ||
-        tool.description?.toLowerCase().includes(query)
+        tool.description?.toLowerCase().includes(query) ||
+        tool.tags?.some(tag => tag.toLowerCase().includes(query))
       );
     }
 

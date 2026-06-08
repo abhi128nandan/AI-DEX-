@@ -218,7 +218,7 @@ export default function SubmitPage() {
               {loading ? (
                 <>
                   <Loader2 className="w-5 h-5 animate-spin" />
-                  Encrypting Payload...
+                  Submitting...
                 </>
               ) : (
                 <>
@@ -228,7 +228,7 @@ export default function SubmitPage() {
               )}
             </button>
             <p className="text-xs text-slate-500 text-center mt-4">
-              All submissions are manually strictly reviewed via our moderation engine before publication.
+              All submissions are reviewed before going live.
             </p>
           </div>
         </form>
