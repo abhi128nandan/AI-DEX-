@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * Preservation Property Tests
  * 
@@ -201,7 +200,6 @@ describe('Property 2: Preservation - Valid Data Display and Processing', () => {
         category: 'productivity',
         tags: ['ai'],
         description: 'A test tool',
-        pricing, // Valid pricing value
         website_url: 'https://example.com',
       logo_url: null,
         views_count: 1000,
@@ -232,8 +230,7 @@ describe('Property 2: Preservation - Valid Data Display and Processing', () => {
       tags: ['ai'],
       description: 'A test tool',
       website_url: 'https://example.com',
-      logo_url: null, // Valid website_url
-      logo_url: 'https://example.com/logo.png', // Valid logo_url // Valid pricing_url
+      logo_url: 'https://example.com/logo.png',
       views_count: 1000,
       votes_count: 10,
       is_featured: false,
@@ -299,7 +296,6 @@ describe('Property 2: Preservation - Valid Data Display and Processing', () => {
       fc.property(
         fc.record({
           tags: fc.array(fc.string({ minLength: 2, maxLength: 10 }), { minLength: 1, maxLength: 10 }),
-          useCases: fc.array(fc.string({ minLength: 5, maxLength: 30 }), { minLength: 1, maxLength: 5 }),
         }),
         (validFields) => {
           const tool: Tool = {
@@ -309,7 +305,6 @@ describe('Property 2: Preservation - Valid Data Display and Processing', () => {
             category: 'productivity',
             tags: validFields.tags,
             description: 'Testing valid arrays',
-            useCases: validFields.useCases,
             website_url: 'https://example.com',
       logo_url: null,
             views_count: 1000,
@@ -388,8 +383,6 @@ describe('Property 2: Preservation - Valid Data Display and Processing', () => {
           views_count: fc.integer({ min: 0, max: 1000000 }),
           votes_count: fc.integer({ min: 0, max: 10000 }),
           tags: fc.array(fc.string({ minLength: 2, maxLength: 10 }), { minLength: 1, maxLength: 5 }),
-          useCases: fc.array(fc.string({ minLength: 5, maxLength: 30 }), { minLength: 1, maxLength: 3 }),
-          pricing: fc.constantFrom('free', 'freemium', 'paid'),
         }),
         (validData) => {
           const tool: Tool = {
@@ -399,8 +392,6 @@ describe('Property 2: Preservation - Valid Data Display and Processing', () => {
             category: 'productivity',
             tags: validData.tags,
             description: 'Testing complete valid data',
-            useCases: validData.useCases,
-            pricing: validData.pricing,
             website_url: 'https://example.com',
       logo_url: null,
             views_count: validData.views_count,

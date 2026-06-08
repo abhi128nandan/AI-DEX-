@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * Admin Auth Preservation Property Tests
  * 
@@ -44,7 +43,7 @@ describe('Property 2: Preservation - Existing Admin Functionality Unchanged', ()
       role: 'admin',
     };
 
-    const testSupabase = {
+    const testSupabase: any = {
       auth: {
         getUser: vi.fn().mockResolvedValue({
           data: { user: adminUser },
@@ -103,7 +102,7 @@ describe('Property 2: Preservation - Existing Admin Functionality Unchanged', ()
       role: 'user',
     };
 
-    const testSupabase = {
+    const testSupabase: any = {
       auth: {
         getUser: vi.fn().mockResolvedValue({
           data: { user: regularUser },
@@ -152,7 +151,7 @@ describe('Property 2: Preservation - Existing Admin Functionality Unchanged', ()
    * EXPECTED OUTCOME ON FIXED CODE: Test PASSES (behavior preserved)
    */
   it('should deny access to unauthenticated users', async () => {
-    const testSupabase = {
+    const testSupabase: any = {
       auth: {
         getUser: vi.fn().mockResolvedValue({
           data: { user: null },
@@ -217,7 +216,7 @@ describe('Property 2: Preservation - Existing Admin Functionality Unchanged', ()
       },
     ];
 
-    const testSupabase = {
+    const testSupabase: any = {
       auth: {
         getUser: vi.fn().mockResolvedValue({
           data: { user: adminUser },
@@ -332,7 +331,7 @@ describe('Property 2: Preservation - Existing Admin Functionality Unchanged', ()
     let insertedTool: any = null;
     let updatedSubmission: any = null;
 
-    const testSupabase = {
+    const testSupabase: any = {
       auth: {
         getUser: vi.fn().mockResolvedValue({
           data: { user: adminUser },
@@ -456,7 +455,7 @@ describe('Property 2: Preservation - Existing Admin Functionality Unchanged', ()
 
     let updatedSubmission: any = null;
 
-    const testSupabase = {
+    const testSupabase: any = {
       auth: {
         getUser: vi.fn().mockResolvedValue({
           data: { user: adminUser },
@@ -546,7 +545,7 @@ describe('Property 2: Preservation - Existing Admin Functionality Unchanged', ()
             role: 'admin',
           };
 
-          const testSupabase = {
+          const testSupabase: any = {
             auth: {
               getUser: vi.fn().mockResolvedValue({
                 data: { user: userData },
@@ -608,7 +607,7 @@ describe('Property 2: Preservation - Existing Admin Functionality Unchanged', ()
             role: userData.role,
           };
 
-          const testSupabase = {
+          const testSupabase: any = {
             auth: {
               getUser: vi.fn().mockResolvedValue({
                 data: { user: userData },
@@ -673,7 +672,7 @@ describe('Property 2: Preservation - Existing Admin Functionality Unchanged', ()
           const results: boolean[] = [];
 
           for (let i = 0; i < 3; i++) {
-            const testSupabase = {
+            const testSupabase: any = {
               auth: {
                 getUser: vi.fn().mockResolvedValue({
                   data: { user: userData },

@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * Bug Condition Exploration Test
  * 
@@ -304,7 +303,6 @@ describe('Property 1: Bug Condition - Null Data and Configuration Failures', () 
       fc.property(
         fc.record({
           tags: fc.constantFrom(null, undefined, []),
-          useCases: fc.constantFrom(null, undefined, []),
         }),
         (nullFields) => {
           const tool: Tool = {
@@ -314,7 +312,6 @@ describe('Property 1: Bug Condition - Null Data and Configuration Failures', () 
             category: 'productivity',
             tags: nullFields.tags as any,
             description: 'Testing null arrays',
-            useCases: nullFields.useCases as any,
             website_url: 'https://example.com',
       logo_url: null,
             views_count: 1000,
