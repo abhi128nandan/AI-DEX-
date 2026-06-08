@@ -2,7 +2,7 @@
 
 import { useState, FormEvent } from 'react';
 import { Sparkles, Send, CheckCircle, Loader2, Link as LinkIcon, AlertCircle } from 'lucide-react';
-import { CATEGORIES } from '@/data/tools';
+import { CATEGORIES } from '@/lib/config/tool-categories';
 import { getSupabaseClient } from '@/lib/supabase/client';
 import Link from 'next/link';
 

@@ -72,7 +72,7 @@ export async function POST(request: Request) {
 
     try {
       const response = await resend.emails.send({
-        from: 'AIDex Registration <onboarding@resend.dev>', // Replace with verified domain natively
+        from: process.env.EMAIL_FROM || 'AIDex Registration <onboarding@resend.dev>',
         to: email, // Can be string or array
         subject: 'Verify your AIDex Account',
         html: `

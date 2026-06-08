@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createClient as createSSRClient } from '@/lib/supabase/server';
-import { validateUUID } from '@/lib/validation/uuid';
+import { validateUUID } from '@/lib/validators/uuid';
 
 /**
  * Vote API Endpoint

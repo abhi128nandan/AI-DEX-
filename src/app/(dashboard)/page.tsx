@@ -1,4 +1,4 @@
-// import { CATEGORIES, CATEGORY_COUNTS } from '@/data/tools';
+// import { CATEGORIES, CATEGORY_COUNTS } from '@/lib/config/tool-categories';
 import { HeroHighlight } from '@/components/ui/HeroHighlight';
 import { ArrowRight, Sparkles } from 'lucide-react';
 import Link from 'next/link';

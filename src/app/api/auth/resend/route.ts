@@ -5,10 +5,7 @@ import { getSiteUrl } from '@/lib/utils';
 
 const resend = new Resend(process.env.RESEND_API_KEY || 're_dummy_key');
 
-// Extremely rudimentary rate-limiting cache (In-memory, resets on server spin-down)
-// For true production, map this to Redis or Supabase edge tables.
-const RESEND_COOLDOWN_MAP = new Map<string, number>();
-const COOLDOWN_MS = 60000; // 60 seconds
+
 
 export async function POST(request: Request) {
   try {
@@ -20,15 +17,27 @@ export async function POST(request: Request) {
       return NextResponse.json({ success: false, message: 'Email is required.' }, { status: 400 });
     }
     
-    // Primitive Rate Limiting Check
-    const lastRequest = RESEND_COOLDOWN_MAP.get(email);
-    if (lastRequest && Date.now() - lastRequest < COOLDOWN_MS) {
-       console.warn(`[API] Rate limit hit for ${email}. Re-try in ${Math.round((COOLDOWN_MS - (Date.now() - lastRequest))/1000)} seconds.`);
-       return NextResponse.json({ success: false, message: 'Please wait a minute before requesting another email.' }, { status: 429 });
-    }
+
 
     // Generate Verification Link via Admin API
     const adminClient = createAdminClient();
+
+    // Supabase-backed rate limit — survives server restarts
+    const COOLDOWN_SECONDS = 60;
+    const { data: recentLink } = await adminClient
+      .from('auth_rate_limits')
+      .select('created_at')
+      .eq('email', email)
+      .eq('action', 'resend')
+      .gte('created_at', new Date(Date.now() - COOLDOWN_SECONDS * 1000).toISOString())
+      .maybeSingle();
+
+    if (recentLink) {
+      return NextResponse.json(
+        { success: false, message: 'Please wait a minute before requesting another email.' },
+        { status: 429 }
+      );
+    }
     const { data: linkData, error: linkError } = await adminClient.auth.admin.generateLink({
       type: 'magiclink',
       email: email,
@@ -44,7 +53,7 @@ export async function POST(request: Request) {
 
     const { action_link } = linkData.properties;
     const { data: emailData, error: resendError } = await resend.emails.send({
-      from: 'AIDex Auth <onboarding@resend.dev>',
+      from: process.env.EMAIL_FROM || 'AIDex Auth <onboarding@resend.dev>',
       to: [email],
       subject: 'Your AIDex Magic Link',
       html: `
@@ -66,8 +75,11 @@ export async function POST(request: Request) {
     }
 
     
-    // Cache the cooldown locally
-    RESEND_COOLDOWN_MAP.set(email, Date.now());
+    // Record this send for rate limiting
+    await adminClient
+      .from('auth_rate_limits')
+      .insert({ email, action: 'resend', created_at: new Date().toISOString() })
+      .then(() => {}); // fire-and-forget
 
     return NextResponse.json({ 
       success: true, 

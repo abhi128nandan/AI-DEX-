@@ -1,4 +1,4 @@
-import { CATEGORIES } from '@/data/tools';
+import { CATEGORIES } from '@/lib/config/tool-categories';
 import ToolGrid from '@/components/tools/ToolGrid';
 import { Layers } from 'lucide-react';
 import Link from 'next/link';

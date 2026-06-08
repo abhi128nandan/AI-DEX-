@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useSave } from '@/hooks/useSave';
+import { useSave } from '@/hooks/use-save';
 import { Bookmark, Loader2 } from 'lucide-react';
 
 interface SaveButtonProps {

@@ -10,9 +10,9 @@ import {
   Globe, Tag
 } from 'lucide-react';
 import { Tool } from '@/types';
-import { resolveLogoUrl, getAvatarGradient } from '@/lib/toolLogos';
-import { CATEGORY_ICONS, normalizeName as normalizeCategory } from '@/lib/categoryIcons';
-import { useAnalytics } from '@/lib/useAnalytics';
+import { resolveLogoUrl, getAvatarGradient } from '@/lib/config/tool-logos';
+import { CATEGORY_ICONS, normalizeName as normalizeCategory } from '@/lib/config/category-icons';
+import { useAnalytics } from '@/hooks/use-analytics';
 import { getSupabaseClient } from '@/lib/supabase/client';
 import { TOOL_SELECT } from '@/lib/database/schema';
 import VoteButton from './VoteButton';

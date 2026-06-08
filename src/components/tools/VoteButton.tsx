@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useVote } from '@/hooks/useVote';
+import { useVote } from '@/hooks/use-vote';
 import { ArrowUp, ArrowDown, Loader2 } from 'lucide-react';
 
 interface VoteButtonProps {

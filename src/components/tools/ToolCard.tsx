@@ -5,12 +5,12 @@ import Image from 'next/image';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { BadgeCheck, ExternalLink } from 'lucide-react';
 import { Tool } from '@/types';
-import { resolveLogoUrl, getAvatarGradient } from '@/lib/toolLogos';
-import { CATEGORY_ICONS, CATEGORY_COLORS, DEFAULT_CATEGORY_ICON, normalizeName as normalizeCategory } from '@/lib/categoryIcons';
+import { resolveLogoUrl, getAvatarGradient } from '@/lib/config/tool-logos';
+import { CATEGORY_ICONS, CATEGORY_COLORS, DEFAULT_CATEGORY_ICON, normalizeName as normalizeCategory } from '@/lib/config/category-icons';
 import VoteButton from './VoteButton';
 import SaveButton from './SaveButton';
 import { motion } from 'framer-motion';
-import { useAnalytics } from '@/lib/useAnalytics';
+import { useAnalytics } from '@/hooks/use-analytics';
 
 interface ToolCardProps {
   tool: Tool;

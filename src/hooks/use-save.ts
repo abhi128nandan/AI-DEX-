@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { getSupabaseClient } from '@/lib/supabase/client';
-import { isValidUUID } from '@/lib/validation/uuid';
+import { isValidUUID } from '@/lib/validators/uuid';
 
 export function useSave(toolId: string, initialIsSaved: boolean) {
   const [isSaved, setIsSaved] = useState(initialIsSaved);

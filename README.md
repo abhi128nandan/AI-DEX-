@@ -23,6 +23,11 @@ cp .env.example .env.local
 # Open .env.local and fill in the values below
 ```
 
+### One-time Supabase setup
+Run the SQL files in `supabase_scripts/` in the Supabase SQL editor in this order:
+1. `supabase-schema.sql`
+2. `setup-auth-rate-limits.sql`
+
 ## Environment Variables
 
 | Variable | Description |
@@ -32,6 +37,7 @@ cp .env.example .env.local
 | `SUPABASE_SERVICE_ROLE_KEY` | Supabase service-role key (server-side only, **never** expose to the client) |
 | `NEXT_PUBLIC_SITE_URL` | Public site URL, e.g. `http://localhost:3000` |
 | `RESEND_API_KEY` | Resend API key for transactional emails |
+| `EMAIL_FROM` | Verified sender address, e.g. `AIDex <noreply@yourdomain.com>` |
 
 ## Development
 

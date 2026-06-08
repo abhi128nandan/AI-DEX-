@@ -1,7 +1,7 @@
-import { CATEGORIES, CATEGORY_COUNTS } from '@/data/tools';
+import { CATEGORIES, CATEGORY_COUNTS } from '@/lib/config/tool-categories';
 import Link from 'next/link';
 import { createClient } from '@/lib/supabase/server';
-import { CATEGORY_ICONS, CATEGORY_COLORS, DEFAULT_CATEGORY_ICON, normalizeName as normalizeCategory } from '@/lib/categoryIcons';
+import { CATEGORY_ICONS, CATEGORY_COLORS, DEFAULT_CATEGORY_ICON, normalizeName as normalizeCategory } from '@/lib/config/category-icons';
 
 export default async function CategoriesPage() {
   // CRITICAL: Fetch tools from database to get accurate counts

@@ -11,7 +11,7 @@ import {
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-import { useAnalytics } from '@/lib/useAnalytics';
+import { useAnalytics } from '@/hooks/use-analytics';
 
 
 

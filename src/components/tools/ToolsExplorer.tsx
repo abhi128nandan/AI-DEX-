@@ -5,8 +5,8 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { Search, ArrowUpDown } from 'lucide-react';
 import ToolCard from './ToolCard';
 import { Tool } from '@/types';
-// import { CATEGORY_COUNTS } from '@/data/tools';
-import { CATEGORY_ICONS, DEFAULT_CATEGORY_ICON, normalizeName as normalizeCategory } from '@/lib/categoryIcons';
+// import { CATEGORY_COUNTS } from '@/lib/config/tool-categories';
+import { CATEGORY_ICONS, DEFAULT_CATEGORY_ICON, normalizeName as normalizeCategory } from '@/lib/config/category-icons';
 import {
   Select,
   SelectContent,

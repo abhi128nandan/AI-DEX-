@@ -1,7 +1,7 @@
 'use client';
 
 import { QueryClientProvider } from '@tanstack/react-query';
-import { getQueryClient } from '@/lib/queryClient';
+import { getQueryClient } from '@/lib/query-client';
 
 /**
  * QueryProvider — Wraps the app with TanStack Query context.

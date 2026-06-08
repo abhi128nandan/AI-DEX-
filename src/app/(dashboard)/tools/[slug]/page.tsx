@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { ArrowLeft, ExternalLink, Eye, Share2, BadgeCheck } from 'lucide-react';
-import { resolveLogoUrl } from '@/lib/toolLogos';
+import { resolveLogoUrl } from '@/lib/config/tool-logos';
 import VoteButton from '@/components/tools/VoteButton';
 
 import ExpandableText from '@/components/tools/ExpandableText';
