@@ -1,13 +1,19 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { Sparkles, Search, X } from 'lucide-react';
 import SearchBar from './SearchBar';
 import AuthButton from '../auth/AuthButton';
 
 export default function Navbar() {
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
+  const pathname = usePathname();
+
+  useEffect(() => {
+    setMobileSearchOpen(false);
+  }, [pathname]);
 
   return (
     <nav className="fixed top-0 z-50 w-full bg-[var(--surface-base)]/80 backdrop-blur-xl border-b border-white/[0.08] shadow-[0_1px_40px_-20px_rgba(124,58,237,0.3)]">
@@ -31,7 +37,7 @@ export default function Navbar() {
         {/* Mobile search — icon button + expandable bar */}
         <div className="flex md:hidden items-center">
           {mobileSearchOpen ? (
-            <div className="flex items-center gap-2 absolute left-0 right-0 top-0 h-16 px-4 bg-[var(--surface-base)] z-10">
+            <div className="flex items-center gap-2 absolute left-0 right-0 top-0 h-16 px-4 bg-[var(--surface-base)] z-[70]">
               <SearchBar />
               <button
                 onClick={() => setMobileSearchOpen(false)}

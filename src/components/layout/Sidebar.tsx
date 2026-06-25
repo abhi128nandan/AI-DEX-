@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars, @typescript-eslint/no-require-imports, react/no-unescaped-entities, react-hooks/exhaustive-deps, prefer-const, react-hooks/set-state-in-effect */
 "use client";
 
 
@@ -26,6 +25,59 @@ const NAV_ITEMS = [
 const FOR_YOU_ITEMS = [
   { path: '/saved', label: 'Saved Tools', Icon: Bookmark, color: 'from-pink-500 to-rose-500' }
 ];
+
+interface NavItemProps {
+  path: string;
+  label: string;
+  Icon: React.ComponentType<{ className?: string }>;
+  color: string;
+  isActive: boolean;
+  expanded: boolean;
+}
+
+function NavItem({ path, label, Icon, color, isActive, expanded }: NavItemProps) {
+  return (
+    <Link
+      href={path}
+      className={`group/nav relative flex items-center gap-3 py-2.5 text-[13px] font-semibold rounded-xl transition-all duration-200 ${
+        isActive
+          ? 'text-white bg-white/[0.08]'
+          : 'text-slate-400 hover:text-white hover:bg-white/[0.04]'
+      } ${expanded ? 'px-3 justify-start' : 'px-0 justify-center'}`}
+      title={!expanded ? label : undefined}
+    >
+      {isActive && (
+        <motion.div
+          layoutId="sidebar-active-indicator"
+          className={`absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 rounded-r-full bg-gradient-to-b ${color}`}
+          transition={{ type: 'spring', stiffness: 350, damping: 30 }}
+        />
+      )}
+      <div className={`shrink-0 flex items-center justify-center w-8 h-8 rounded-lg outline-none transition-all duration-300 ease-out group-hover/nav:scale-110 ${
+        isActive
+          ? `bg-gradient-to-br ${color} shadow-lg scale-105 shadow-purple-500/20`
+          : 'bg-white/[0.04] group-hover/nav:bg-white/[0.08]'
+      }`}>
+        <Icon className={`${expanded ? 'w-4 h-4' : 'w-[18px] h-[18px]'} ${
+          isActive ? 'text-white' : 'text-slate-400 group-hover/nav:text-white'
+        } transition-colors`} />
+      </div>
+      <AnimatePresence>
+        {expanded && (
+          <motion.span
+            initial={{ opacity: 0, x: -8 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -8 }}
+            transition={{ duration: 0.15 }}
+            className="whitespace-nowrap"
+          >
+            {label}
+          </motion.span>
+        )}
+      </AnimatePresence>
+    </Link>
+  );
+}
 
 export default function Sidebar() {
   const pathname = usePathname();
@@ -92,7 +144,7 @@ export default function Sidebar() {
   }
 
   // === SIDEBAR CONTENT (shared between desktop & mobile) ===
-  const renderSidebarContent = ({ isMobile = false }: { isMobile?: boolean }) => {
+  const SidebarContent = ({ isMobile = false }: { isMobile?: boolean }) => {
     const expanded = isMobile || isExpanded;
     
     return (
@@ -141,54 +193,17 @@ export default function Sidebar() {
             {expanded ? 'Discover' : '•••'}
           </h4>
           <nav className="space-y-1">
-            {NAV_ITEMS.map(item => {
-              const isActive = pathname === item.path;
-              return (
-                <Link
-                  key={item.path}
-                  href={item.path}
-                  className={`group/nav relative flex items-center gap-3 py-2.5 text-[13px] font-semibold rounded-xl transition-all duration-200 ${
-                    isActive
-                      ? 'text-white bg-white/[0.08]'
-                      : 'text-slate-400 hover:text-white hover:bg-white/[0.04]'
-                  } ${expanded ? 'px-3 justify-start' : 'px-0 justify-center'}`}
-                  title={!expanded ? item.label : undefined}
-                >
-                  {/* Active indicator bar */}
-                  {isActive && (
-                    <motion.div
-                      layoutId="sidebar-active-indicator"
-                      className={`absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 rounded-r-full bg-gradient-to-b ${item.color}`}
-                      transition={{ type: 'spring', stiffness: 350, damping: 30 }}
-                    />
-                  )}
-                  
-                  <div className={`shrink-0 flex items-center justify-center w-8 h-8 rounded-lg outline-none transition-all duration-300 ease-out group-hover/nav:scale-110 ${
-                    isActive 
-                      ? `bg-gradient-to-br ${item.color} shadow-lg scale-105 shadow-purple-500/20` 
-                      : 'bg-white/[0.04] group-hover/nav:bg-white/[0.08]'
-                  }`}>
-                    <item.Icon className={`${expanded ? 'w-4 h-4' : 'w-[18px] h-[18px]'} ${
-                      isActive ? 'text-white' : 'text-slate-400 group-hover/nav:text-white'
-                    } transition-colors`} />
-                  </div>
-
-                  <AnimatePresence>
-                    {expanded && (
-                      <motion.span
-                        initial={{ opacity: 0, x: -8 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: -8 }}
-                        transition={{ duration: 0.15 }}
-                        className="whitespace-nowrap"
-                      >
-                        {item.label}
-                      </motion.span>
-                    )}
-                  </AnimatePresence>
-                </Link>
-              );
-            })}
+            {NAV_ITEMS.map(item => (
+              <NavItem
+                key={item.path}
+                path={item.path}
+                label={item.label}
+                Icon={item.Icon}
+                color={item.color}
+                isActive={pathname === item.path}
+                expanded={expanded}
+              />
+            ))}
           </nav>
         </div>
 
@@ -198,53 +213,17 @@ export default function Sidebar() {
             {expanded ? 'For You' : '•••'}
           </h4>
           <nav className="space-y-1">
-            {FOR_YOU_ITEMS.map(item => {
-              const isActive = pathname === item.path;
-              return (
-                <Link
-                  key={item.path}
-                  href={item.path}
-                  className={`group/nav relative flex items-center gap-3 py-2.5 text-[13px] font-semibold rounded-xl transition-all duration-200 ${
-                    isActive
-                      ? 'text-white bg-white/[0.08]'
-                      : 'text-slate-400 hover:text-white hover:bg-white/[0.04]'
-                  } ${expanded ? 'px-3 justify-start' : 'px-0 justify-center'}`}
-                  title={!expanded ? item.label : undefined}
-                >
-                  {isActive && (
-                    <motion.div
-                      layoutId="sidebar-active-indicator"
-                      className={`absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 rounded-r-full bg-gradient-to-b ${item.color}`}
-                      transition={{ type: 'spring', stiffness: 350, damping: 30 }}
-                    />
-                  )}
-                  
-                  <div className={`shrink-0 flex items-center justify-center w-8 h-8 rounded-lg outline-none transition-all duration-300 ease-out group-hover/nav:scale-110 ${
-                    isActive 
-                      ? `bg-gradient-to-br ${item.color} shadow-lg scale-105 shadow-purple-500/20` 
-                      : 'bg-white/[0.04] group-hover/nav:bg-white/[0.08]'
-                  }`}>
-                    <item.Icon className={`${expanded ? 'w-4 h-4' : 'w-[18px] h-[18px]'} ${
-                      isActive ? 'text-white' : 'text-slate-400 group-hover/nav:text-white'
-                    } transition-colors`} />
-                  </div>
-
-                  <AnimatePresence>
-                    {expanded && (
-                      <motion.span
-                        initial={{ opacity: 0, x: -8 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: -8 }}
-                        transition={{ duration: 0.15 }}
-                        className="whitespace-nowrap"
-                      >
-                        {item.label}
-                      </motion.span>
-                    )}
-                  </AnimatePresence>
-                </Link>
-              );
-            })}
+            {FOR_YOU_ITEMS.map(item => (
+              <NavItem
+                key={item.path}
+                path={item.path}
+                label={item.label}
+                Icon={item.Icon}
+                color={item.color}
+                isActive={pathname === item.path}
+                expanded={expanded}
+              />
+            ))}
           </nav>
         </div>
 
@@ -279,7 +258,7 @@ export default function Sidebar() {
               transition={{ type: 'spring', stiffness: 400, damping: 35 }}
               className="fixed left-0 top-0 bottom-0 w-[280px] z-[80] lg:hidden bg-[#0a0a10]/95 backdrop-blur-2xl border-r border-white/[0.06] p-5 overflow-y-auto"
             >
-              {renderSidebarContent({ isMobile: true })}
+              <SidebarContent isMobile />
             </motion.aside>
           </>
         )}
@@ -301,7 +280,7 @@ export default function Sidebar() {
             : 'w-[72px] px-2 bg-[#0a0a0f]/80 backdrop-blur-xl'
         }`}
       >
-        {renderSidebarContent({})}
+        <SidebarContent />
       </aside>
     </>
   );

@@ -47,3 +47,9 @@ next-env.d.ts
 
 # turborepo
 .turbo/
+
+# Local development utility scripts (not part of the application)
+filter_stdin.py
+rewrite.py
+seq_editor.py
+*.seq_editor.py
