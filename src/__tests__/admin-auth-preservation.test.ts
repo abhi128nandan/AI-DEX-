@@ -44,7 +44,7 @@ describe('Property 2: Preservation - Existing Admin Functionality Unchanged', ()
       role: 'admin',
     };
 
-    const testSupabase: any = {
+    const testSupabase = {
       auth: {
         getUser: vi.fn().mockResolvedValue({
           data: { user: adminUser },
@@ -76,7 +76,11 @@ describe('Property 2: Preservation - Existing Admin Functionality Unchanged', ()
     const { data: { user } } = await testSupabase.auth.getUser();
     expect(user).toBeTruthy();
 
-    const { data: profile } = await (testSupabase.from('profiles').select('role').eq('id', user!.id).maybeSingle() as any);
+    const { data: profile } = await testSupabase
+      .from('profiles')
+      .select('role')
+      .eq('id', user!.id)
+      .maybeSingle();
 
     expect(profile).toBeTruthy();
     expect(profile?.role).toBe('admin');
@@ -103,7 +107,7 @@ describe('Property 2: Preservation - Existing Admin Functionality Unchanged', ()
       role: 'user',
     };
 
-    const testSupabase: any = {
+    const testSupabase = {
       auth: {
         getUser: vi.fn().mockResolvedValue({
           data: { user: regularUser },
@@ -135,7 +139,11 @@ describe('Property 2: Preservation - Existing Admin Functionality Unchanged', ()
     const { data: { user } } = await testSupabase.auth.getUser();
     expect(user).toBeTruthy();
 
-    const { data: profile } = await (testSupabase.from('profiles').select('role').eq('id', user!.id).maybeSingle() as any);
+    const { data: profile } = await testSupabase
+      .from('profiles')
+      .select('role')
+      .eq('id', user!.id)
+      .maybeSingle();
 
     expect(profile).toBeTruthy();
     expect(profile?.role).toBe('user');
@@ -152,7 +160,7 @@ describe('Property 2: Preservation - Existing Admin Functionality Unchanged', ()
    * EXPECTED OUTCOME ON FIXED CODE: Test PASSES (behavior preserved)
    */
   it('should deny access to unauthenticated users', async () => {
-    const testSupabase: any = {
+    const testSupabase = {
       auth: {
         getUser: vi.fn().mockResolvedValue({
           data: { user: null },
@@ -217,7 +225,7 @@ describe('Property 2: Preservation - Existing Admin Functionality Unchanged', ()
       },
     ];
 
-    const testSupabase: any = {
+    const testSupabase = {
       auth: {
         getUser: vi.fn().mockResolvedValue({
           data: { user: adminUser },
@@ -271,7 +279,11 @@ describe('Property 2: Preservation - Existing Admin Functionality Unchanged', ()
 
     // Verify admin
     const { data: { user } } = await testSupabase.auth.getUser();
-    const { data: profile } = await (testSupabase.from('profiles').select('role').eq('id', user!.id).maybeSingle() as any);
+    const { data: profile } = await testSupabase
+      .from('profiles')
+      .select('role')
+      .eq('id', user!.id)
+      .maybeSingle();
 
     expect(profile?.role).toBe('admin');
 
@@ -332,7 +344,7 @@ describe('Property 2: Preservation - Existing Admin Functionality Unchanged', ()
     let insertedTool: any = null;
     let updatedSubmission: any = null;
 
-    const testSupabase: any = {
+    const testSupabase = {
       auth: {
         getUser: vi.fn().mockResolvedValue({
           data: { user: adminUser },
@@ -390,23 +402,28 @@ describe('Property 2: Preservation - Existing Admin Functionality Unchanged', ()
 
     // Verify admin
     const { data: { user } } = await testSupabase.auth.getUser();
-    const { data: profile } = await (testSupabase.from('profiles').select('role').eq('id', user!.id).maybeSingle() as any);
+    const { data: profile } = await testSupabase
+      .from('profiles')
+      .select('role')
+      .eq('id', user!.id)
+      .maybeSingle();
 
     expect(profile?.role).toBe('admin');
 
     // Fetch submission
-    const { data: submission } = await (testSupabase.from('tool_submissions').select('*').eq('id', submissionToApprove.id).single() as any);
+    const { data: submission } = await testSupabase
+      .from('tool_submissions')
+      .select('*')
+      .eq('id', submissionToApprove.id)
+      .single();
 
     expect(submission).toBeTruthy();
 
     // Insert into tools table
-    const { error: insertError } = await testSupabase
-      .from('tools')
-      .insert({
+    const { error: insertError } = await (testSupabase.from('tools') as any).insert({
         name: submission!.name,
         description: submission!.description,
         website_url: submission!.url,
-      logo_url: null,
         category: submission!.category,
         tags: submission!.tags,
         is_verified: true,
@@ -418,7 +435,8 @@ describe('Property 2: Preservation - Existing Admin Functionality Unchanged', ()
     expect(insertedTool.is_verified).toBe(true);
 
     // Update submission status
-    const { error: updateError } = await (testSupabase.from('tool_submissions').update({ status: 'approved' }).eq('id', submissionToApprove.id) as any);
+    const { error: updateError } = await (testSupabase.from('tool_submissions') as any).update({ status: 'approved' })
+      .eq('id', submissionToApprove.id);
 
     expect(updateError).toBeNull();
     expect(updatedSubmission).toBeTruthy();
@@ -456,7 +474,7 @@ describe('Property 2: Preservation - Existing Admin Functionality Unchanged', ()
 
     let updatedSubmission: any = null;
 
-    const testSupabase: any = {
+    const testSupabase = {
       auth: {
         getUser: vi.fn().mockResolvedValue({
           data: { user: adminUser },
@@ -503,7 +521,11 @@ describe('Property 2: Preservation - Existing Admin Functionality Unchanged', ()
 
     // Verify admin
     const { data: { user } } = await testSupabase.auth.getUser();
-    const { data: profile } = await (testSupabase.from('profiles').select('role').eq('id', user!.id).maybeSingle() as any);
+    const { data: profile } = await testSupabase
+      .from('profiles')
+      .select('role')
+      .eq('id', user!.id)
+      .maybeSingle();
 
     expect(profile?.role).toBe('admin');
 
@@ -517,7 +539,8 @@ describe('Property 2: Preservation - Existing Admin Functionality Unchanged', ()
     expect(submission).toBeTruthy();
 
     // Update submission status to rejected
-    const { error: updateError } = await (testSupabase.from('tool_submissions').update({ status: 'rejected' }).eq('id', submissionToReject.id) as any);
+    const { error: updateError } = await (testSupabase.from('tool_submissions') as any).update({ status: 'rejected' })
+      .eq('id', submissionToReject.id);
 
     expect(updateError).toBeNull();
     expect(updatedSubmission).toBeTruthy();
@@ -546,7 +569,7 @@ describe('Property 2: Preservation - Existing Admin Functionality Unchanged', ()
             role: 'admin',
           };
 
-          const testSupabase: any = {
+          const testSupabase = {
             auth: {
               getUser: vi.fn().mockResolvedValue({
                 data: { user: userData },
@@ -608,7 +631,7 @@ describe('Property 2: Preservation - Existing Admin Functionality Unchanged', ()
             role: userData.role,
           };
 
-          const testSupabase: any = {
+          const testSupabase = {
             auth: {
               getUser: vi.fn().mockResolvedValue({
                 data: { user: userData },
@@ -673,7 +696,7 @@ describe('Property 2: Preservation - Existing Admin Functionality Unchanged', ()
           const results: boolean[] = [];
 
           for (let i = 0; i < 3; i++) {
-            const testSupabase: any = {
+            const testSupabase = {
               auth: {
                 getUser: vi.fn().mockResolvedValue({
                   data: { user: userData },
@@ -753,4 +776,5 @@ describe('Property 2: Preservation - Existing Admin Functionality Unchanged', ()
     );
   });
 });
+
 

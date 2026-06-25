@@ -27,6 +27,16 @@ function DashboardSkeleton() {
   );
 }
 
+export const metadata = {
+  title: 'Discover AI Tools',
+  description: 'Browse and vote on the best AI tools, sorted by the community.',
+  openGraph: {
+    title: 'AIDex — Discover the Best AI Tools',
+    description: 'Browse and vote on the best AI tools, sorted by the community.',
+    url: 'https://aidex.app',
+  },
+};
+
 export default function Home() {
   return (
     <Suspense fallback={<DashboardSkeleton />}>
@@ -128,7 +138,7 @@ async function DashboardContent() {
             </h1>
             
             <p className="text-lg md:text-xl text-slate-500 max-w-2xl mx-auto mb-10 leading-relaxed font-medium">
-              Explore {toolsList.length}+ curated AI tools, voted on by the community.
+              Explore {toolsList.length} curated AI tools, voted on by the community.
               Discover what&apos;s trending, top-rated, or newly added.
             </p>
           </div>

@@ -1,3 +1,5 @@
+'use client';
+
 import { Sparkles } from 'lucide-react';
 import Link from 'next/link';
 
@@ -29,16 +31,16 @@ export default function Footer() {
         <div>
           <h3 className="font-semibold text-white mb-4">Connect</h3>
           <ul className="space-y-2 text-sm text-slate-400">
-            <li><Link href="#" className="hover:text-purple-400 transition-colors">Twitter</Link></li>
-            <li><Link href="#" className="hover:text-purple-400 transition-colors">Discord</Link></li>
+            <li><Link href="#" onClick={(e) => e.preventDefault()} title="Coming soon" className="text-slate-600 transition-colors cursor-not-allowed">Twitter</Link></li>
+            <li><Link href="#" onClick={(e) => e.preventDefault()} title="Coming soon" className="text-slate-600 transition-colors cursor-not-allowed">Discord</Link></li>
           </ul>
         </div>
       </div>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 pt-8 border-t border-white/10 text-sm text-slate-500 text-center flex flex-col md:flex-row justify-between items-center gap-4">
         <p>© {new Date().getFullYear()} AIDex. All rights reserved.</p>
         <div className="flex gap-4">
-          <Link href="#" className="hover:text-slate-300">Privacy Policy</Link>
-          <Link href="#" className="hover:text-slate-300">Terms of Service</Link>
+          <Link href="#" onClick={(e) => e.preventDefault()} title="Coming soon" className="text-slate-600 cursor-not-allowed">Privacy Policy</Link>
+          <Link href="#" onClick={(e) => e.preventDefault()} title="Coming soon" className="text-slate-600 cursor-not-allowed">Terms of Service</Link>
         </div>
       </div>
     </footer>

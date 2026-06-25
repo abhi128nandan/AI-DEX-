@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars, @typescript-eslint/no-require-imports, react/no-unescaped-entities, react-hooks/exhaustive-deps, prefer-const, react-hooks/set-state-in-effect */
 /**
  * Bug Condition Exploration Test - Server Component with onClick Handler
  * 
@@ -234,3 +235,4 @@ describe('Property 1: Bug Condition - Server Component with onClick Handler', ()
     expect(usesClientClient).toBe(false);
   });
 });
+

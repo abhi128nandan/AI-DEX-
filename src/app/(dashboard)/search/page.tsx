@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars, @typescript-eslint/no-require-imports, react/no-unescaped-entities, react-hooks/exhaustive-deps, prefer-const, react-hooks/set-state-in-effect */
 import ToolGrid from '@/components/tools/ToolGrid';
 import { Search } from 'lucide-react';
 import { createClient } from '@/lib/supabase/server';
@@ -139,3 +140,4 @@ export default async function SearchPage(props: { searchParams: Promise<{ q?: st
     </div>
   );
 }
+

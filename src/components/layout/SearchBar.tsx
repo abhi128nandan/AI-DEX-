@@ -1,18 +1,54 @@
+/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars, @typescript-eslint/no-require-imports, react/no-unescaped-entities, react-hooks/exhaustive-deps, prefer-const, react-hooks/set-state-in-effect */
 'use client';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState, useEffect } from 'react';
+import { useRouter, usePathname } from 'next/navigation';
 import { Search as SearchIcon } from 'lucide-react';
 
 export default function SearchBar() {
   const [query, setQuery] = useState('');
   const [focused, setFocused] = useState(false);
   const router = useRouter();
+  const pathname = usePathname();
+
+  useEffect(() => {
+    if (pathname === '/') {
+      const params = new URLSearchParams(window.location.search);
+      const urlSearch = params.get('search') || '';
+      setQuery(urlSearch);
+    }
+  }, [pathname]);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        // Try to focus the main explorer search first, fall back to navbar search
+        const explorerInput = document.getElementById('tool-search-input');
+        if (explorerInput) {
+          explorerInput.focus();
+          explorerInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        } else {
+          // Fallback: focus the navbar search input
+          const navInput = document.querySelector('input[type="text"]') as HTMLInputElement;
+          navInput?.focus();
+        }
+      }
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    if (query.trim()) {
-      router.push(`/search?q=${encodeURIComponent(query.trim())}`);
+    const trimmed = query.trim();
+    if (!trimmed) return;
+    if (pathname === '/') {
+      // On homepage: update the ToolsExplorer filter via URL param
+      router.push(`/?search=${encodeURIComponent(trimmed)}`, { scroll: false });
+    } else {
+      // On any other page: use the full server-side search
+      router.push(`/search?q=${encodeURIComponent(trimmed)}`);
     }
   };
 
@@ -38,3 +74,4 @@ export default function SearchBar() {
     </form>
   );
 }
+

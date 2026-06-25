@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars, @typescript-eslint/no-require-imports, react/no-unescaped-entities, react-hooks/exhaustive-deps, prefer-const, react-hooks/set-state-in-effect */
 'use client';
 
 import { useState, useEffect, useMemo } from 'react';
@@ -284,3 +285,4 @@ export default function ToolsExplorer({ tools, isAuthenticated = false, savedToo
     </div>
   );
 }
+

@@ -8,8 +8,28 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const outfit = Outfit({ subsets: ["latin"], variable: "--font-outfit", weight: ["400", "500", "600", "700", "800", "900"] });
 
 export const metadata: Metadata = {
-  title: "AIDex - AI Tools Discovery Platform",
-  description: "Discover the best AI tools sorted by votes, views, and categories. The Product Hunt for AI.",
+  title: {
+    default: "AIDex — Discover the Best AI Tools",
+    template: "%s | AIDex",
+  },
+  description: "Discover and vote on the best AI tools. Curated directory of AI tools sorted by community votes, views, and categories.",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://aidex.app'),
+  openGraph: {
+    type: 'website',
+    siteName: 'AIDex',
+    title: 'AIDex — Discover the Best AI Tools',
+    description: 'Discover and vote on the best AI tools. Community-curated directory.',
+    url: '/',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'AIDex — Discover the Best AI Tools',
+    description: 'Discover and vote on the best AI tools. Community-curated directory.',
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({

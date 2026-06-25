@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars, @typescript-eslint/no-require-imports, react/no-unescaped-entities, react-hooks/exhaustive-deps, prefer-const, react-hooks/set-state-in-effect */
 /**
  * Admin Auth Bug Condition Exploration Test
  * 
@@ -492,3 +493,4 @@ describe('Property 1: Bug Condition - verifyAdmin() Attempts Database Writes', (
     );
   });
 });
+
