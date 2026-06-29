@@ -6,8 +6,7 @@ export async function GET(request: Request) {
   const code = searchParams.get('code');
   const next = searchParams.get('next') ?? '/';
 
-  // Sanitize the redirect target to prevent open redirect attacks.
-  // Only allow relative paths that start with / and do not contain //.
+  // Sanitize redirect target — only allow relative paths, block protocol-relative URLs
   const safeNext =
     typeof next === 'string' &&
     next.startsWith('/') &&
@@ -23,6 +22,5 @@ export async function GET(request: Request) {
     }
   }
 
-  // return the user to an error page with instructions
   return NextResponse.redirect(`${origin}/?error=AuthCallbackError`);
 }
