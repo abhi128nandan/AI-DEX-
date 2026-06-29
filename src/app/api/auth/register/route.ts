@@ -63,12 +63,12 @@ export async function POST(request: Request) {
 
     const newUserId = userData?.user?.id;
 
-    // Record this registration for rate limiting (non-blocking)
-    const { error: rateLimitRecordError } = await adminClient
+    // Record registration for rate limiting (non-blocking)
+    const { error: rlRecordError } = await adminClient
       .from('auth_rate_limits')
       .insert({ email, action: 'register', created_at: new Date().toISOString() });
-    if (rateLimitRecordError) {
-      console.error('[API] Failed to record register rate limit entry:', rateLimitRecordError.message);
+    if (rlRecordError) {
+      console.error('[API] Failed to record register rate limit:', rlRecordError.message);
     }
 
     // Step 2: Generate specific cryptographically secure Validation URL
