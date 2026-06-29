@@ -173,4 +173,7 @@ SELECT
 FROM tools
 LIMIT 10;
 
-RAISE NOTICE 'Migration completed successfully!';
+DO $$ 
+BEGIN
+  RAISE NOTICE 'Migration completed successfully!';
+END $$;

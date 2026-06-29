@@ -5,7 +5,7 @@ import { TOOL_SELECT, validateTools } from '@/lib/database/schema';
 
 export default async function TopPage() {
   const supabase = await createClient();
-  const { data: { session } } = await supabase.auth.getSession();
+  const { data: { user } } = await supabase.auth.getUser();
   const { data: tools } = await supabase
     .from('tools')
     .select(TOOL_SELECT)
@@ -28,7 +28,7 @@ export default async function TopPage() {
         </p>
       </div>
 
-      <ToolGrid tools={topRated} isAuthenticated={!!session} />
+      <ToolGrid tools={topRated} isAuthenticated={!!user} />
     </div>
   );
 }

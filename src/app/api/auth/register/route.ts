@@ -29,6 +29,22 @@ export async function POST(request: Request) {
       return NextResponse.json({ success: false, message: 'Server configuration error.' }, { status: 500 });
     }
 
+    // Rate limiting: prevent account creation spam (max 3 registrations per email per hour)
+    const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000).toISOString();
+    const { data: recentAttempts, error: rateLimitCheckError } = await adminClient
+      .from('auth_rate_limits')
+      .select('id')
+      .eq('email', email)
+      .eq('action', 'register')
+      .gte('created_at', oneHourAgo);
+
+    if (!rateLimitCheckError && recentAttempts && recentAttempts.length >= 3) {
+      return NextResponse.json(
+        { success: false, message: 'Too many registration attempts. Please try again later.' },
+        { status: 429 }
+      );
+    }
+
     // Step 1: Securely create user without triggering default Auth Email immediately
     const { data: userData, error: createError } = await adminClient.auth.admin.createUser({
       email,
@@ -42,10 +58,18 @@ export async function POST(request: Request) {
          return NextResponse.json({ success: false, message: 'User already exists. Try signing in or resending the verification email.' }, { status: 400 });
       }
       console.error(`[API] Fatal Supabase User Creation Error:`, JSON.stringify(createError, null, 2));
-      return NextResponse.json({ success: false, message: createError.message }, { status: 400 });
+      return NextResponse.json({ success: false, message: 'Registration failed. Please try again.' }, { status: 400 });
     }
 
     const newUserId = userData?.user?.id;
+
+    // Record this registration for rate limiting (non-blocking)
+    const { error: rateLimitRecordError } = await adminClient
+      .from('auth_rate_limits')
+      .insert({ email, action: 'register', created_at: new Date().toISOString() });
+    if (rateLimitRecordError) {
+      console.error('[API] Failed to record register rate limit entry:', rateLimitRecordError.message);
+    }
 
     // Step 2: Generate specific cryptographically secure Validation URL
     const { data: linkData, error: linkError } = await adminClient.auth.admin.generateLink({

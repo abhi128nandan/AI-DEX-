@@ -10,7 +10,7 @@ export default async function TagPage(props: { params: Promise<{ slug: string }>
   const tag = params.slug.toLowerCase();
 
   const supabase = await createClient();
-  const { data: { session } } = await supabase.auth.getSession();
+  const { data: { user } } = await supabase.auth.getUser();
   const { data: tools } = await supabase
     .from('tools')
     .select(TOOL_SELECT);
@@ -44,7 +44,7 @@ export default async function TagPage(props: { params: Promise<{ slug: string }>
         </div>
       </div>
 
-      <ToolGrid tools={results} isAuthenticated={!!session} />
+      <ToolGrid tools={results} isAuthenticated={!!user} />
     </div>
   );
 }

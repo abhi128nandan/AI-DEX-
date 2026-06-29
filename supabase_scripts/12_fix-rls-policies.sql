@@ -26,11 +26,12 @@ WHERE tablename = 'tools';
 -- STEP 3: Enable RLS if not enabled
 ALTER TABLE tools ENABLE ROW LEVEL SECURITY;
 
--- STEP 4: Drop all existing policies to start fresh
 DROP POLICY IF EXISTS "Allow public read" ON tools;
 DROP POLICY IF EXISTS "Public tools are viewable by everyone." ON tools;
 DROP POLICY IF EXISTS "Enable read access for all users" ON tools;
 DROP POLICY IF EXISTS "tools_select_policy" ON tools;
+DROP POLICY IF EXISTS "tools_public_read_policy" ON tools;
+
 
 -- STEP 5: Create comprehensive public read policy
 CREATE POLICY "tools_public_read_policy"

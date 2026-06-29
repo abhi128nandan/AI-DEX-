@@ -139,21 +139,34 @@ export function useVote(
     setUserVote(newUserVote);
 
     try {
-      // Direct Supabase mutation
-      const { error: updateError } = await supabase
-        .from('tools')
-        .update({ votes_count: newUpvotes })
-        .eq('id', toolId);
+      // Call the secure server-side API route (atomic RPC, server-validated)
+      const res = await fetch('/api/votes', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ toolId, voteType: type }),
+      });
 
-      if (updateError) throw updateError;
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.message || 'Failed to vote');
+      }
+
+      const data = await res.json();
+
+      // Sync state with server's authoritative counts
+      if (data.data) {
+        setUpvotes(data.data.upvotes ?? newUpvotes);
+        setDownvotes(data.data.downvotes ?? newDownvotes);
+        setUserVote(data.data.userVote ?? newUserVote);
+      }
     } catch (err: any) {
       console.error('[useVote] Vote failed:', err.message);
-      
-      // Revert optimistic update
+
+      // Revert optimistic update on failure
       setUpvotes(previousUpvotes);
       setDownvotes(previousDownvotes);
       setUserVote(previousUserVote);
-      
+
       setError(err.message || 'Failed to vote');
     } finally {
       isProcessing.current = false;

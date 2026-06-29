@@ -12,12 +12,14 @@ CREATE TABLE IF NOT EXISTS public.tool_comments (
 ALTER TABLE public.tool_comments ENABLE ROW LEVEL SECURITY;
 
 -- Allow anyone to read comments
+DROP POLICY IF EXISTS "Anyone can view comments" ON public.tool_comments;
 CREATE POLICY "Anyone can view comments"
 ON public.tool_comments
 FOR SELECT
 USING (true);
 
 -- Allow authenticated users to insert their own comments
+DROP POLICY IF EXISTS "Authenticated users can insert comments" ON public.tool_comments;
 CREATE POLICY "Authenticated users can insert comments"
 ON public.tool_comments
 FOR INSERT
@@ -25,8 +27,10 @@ TO authenticated
 WITH CHECK (auth.uid() = user_id);
 
 -- Allow users to delete their own comments
+DROP POLICY IF EXISTS "Users can delete their own comments" ON public.tool_comments;
 CREATE POLICY "Users can delete their own comments"
 ON public.tool_comments
 FOR DELETE
 TO authenticated
 USING (auth.uid() = user_id);
+

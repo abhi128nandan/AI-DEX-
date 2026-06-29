@@ -47,8 +47,8 @@ export default function Home() {
 
 async function DashboardContent() {
   const supabase = await createClient();
-  const { data: { session } } = await supabase.auth.getSession();
-  const isAuthenticated = !!session;
+  const { data: { user } } = await supabase.auth.getUser();
+  const isAuthenticated = !!user;
   
   // Query only fields that exist in the database schema
   const { data: tools, error } = await supabase
@@ -56,11 +56,11 @@ async function DashboardContent() {
     .select(TOOL_SELECT);
     
   let savedToolIds: string[] = [];
-  if (session?.user?.id) {
+  if (user?.id) {
     const { data: savedData } = await supabase
       .from('saved_tools')
       .select('tool_id')
-      .eq('user_id', session.user.id);
+      .eq('user_id', user.id);
     savedToolIds = savedData?.map(s => s.tool_id) || [];
   }
   

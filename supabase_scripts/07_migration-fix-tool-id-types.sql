@@ -195,10 +195,13 @@ WHERE table_name = 'votes' AND constraint_type = 'FOREIGN KEY';
 -- FINAL VERIFICATION
 -- ============================================
 
-RAISE NOTICE '=== Migration Complete ===';
-RAISE NOTICE 'All tool IDs are now UUIDs';
-RAISE NOTICE 'Voting system will now work correctly';
-RAISE NOTICE 'Run the seed script to populate tools with proper UUIDs';
+DO $$ 
+BEGIN
+  RAISE NOTICE '=== Migration Complete ===';
+  RAISE NOTICE 'All tool IDs are now UUIDs';
+  RAISE NOTICE 'Voting system will now work correctly';
+  RAISE NOTICE 'Run the seed script to populate tools with proper UUIDs';
+END $$;
 
 -- Show final state
 SELECT 

@@ -5,7 +5,7 @@ import { TOOL_SELECT, validateTools } from '@/lib/database/schema';
 
 export default async function TrendingPage() {
   const supabase = await createClient();
-  const { data: { session } } = await supabase.auth.getSession();
+  const { data: { user } } = await supabase.auth.getUser();
   const { data: tools } = await supabase
     .from('tools')
     .select(TOOL_SELECT)
@@ -33,7 +33,7 @@ export default async function TrendingPage() {
         </p>
       </div>
 
-      <ToolGrid tools={trending} isAuthenticated={!!session} />
+      <ToolGrid tools={trending} isAuthenticated={!!user} />
     </div>
   );
 }

@@ -8,16 +8,16 @@ export const dynamic = 'force-dynamic';
 
 export default async function SavedToolsPage() {
   const supabase = await createClient();
-  const { data: { session } } = await supabase.auth.getSession();
+  const { data: { user } } = await supabase.auth.getUser();
 
-  if (!session) {
+  if (!user) {
     redirect('/login');
   }
 
   const { data, error } = await supabase
     .from('saved_tools')
     .select('*, tools(*)')
-    .eq('user_id', session.user.id);
+    .eq('user_id', user.id);
 
   if (error) {
     console.error("Error fetching saved tools:", error);

@@ -26,16 +26,20 @@ ALTER TABLE saved_tools ENABLE ROW LEVEL SECURITY;
 -- 4. Create RLS policies for saved_tools
 
 -- Select policy
+DROP POLICY IF EXISTS "Users can view their own saved tools" ON saved_tools;
 CREATE POLICY "Users can view their own saved tools" 
 ON saved_tools FOR SELECT 
 USING (auth.uid() = user_id);
 
 -- Insert policy
+DROP POLICY IF EXISTS "Users can save tools" ON saved_tools;
 CREATE POLICY "Users can save tools" 
 ON saved_tools FOR INSERT 
 WITH CHECK (auth.uid() = user_id);
 
 -- Delete policy
+DROP POLICY IF EXISTS "Users can unsave tools" ON saved_tools;
 CREATE POLICY "Users can unsave tools" 
 ON saved_tools FOR DELETE 
 USING (auth.uid() = user_id);
+

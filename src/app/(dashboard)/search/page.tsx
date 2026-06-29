@@ -30,7 +30,7 @@ export default async function SearchPage(props: { searchParams: Promise<{ q?: st
   const pageSize = 20;
 
   const supabase = await createClient();
-  const { data: { session } } = await supabase.auth.getSession();
+  const { data: { user } } = await supabase.auth.getUser();
 
   let results: any[] = [];
   let totalCount = 0;
@@ -92,7 +92,7 @@ export default async function SearchPage(props: { searchParams: Promise<{ q?: st
 
       {toolsList.length > 0 ? (
         <>
-          <ToolGrid tools={toolsList} isAuthenticated={!!session} />
+          <ToolGrid tools={toolsList} isAuthenticated={!!user} />
           
           {/* Pagination controls */}
           {totalPages > 1 && (

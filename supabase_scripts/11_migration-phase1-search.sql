@@ -16,12 +16,20 @@
 -- - Zero maintenance overhead
 -- ──────────────────────────────────────────────
 
+-- Create an immutable wrapper for array_to_string because Postgres does not allow STABLE functions in generated columns
+CREATE OR REPLACE FUNCTION public.immutable_array_to_string(arr TEXT[], sep TEXT)
+RETURNS TEXT
+LANGUAGE sql IMMUTABLE STRICT
+AS $$
+  SELECT array_to_string(arr, sep);
+$$;
+
 -- Add generated tsvector column combining name, description, and tags
 ALTER TABLE tools ADD COLUMN IF NOT EXISTS search_vector tsvector
   GENERATED ALWAYS AS (
     setweight(to_tsvector('english', coalesce(name, '')), 'A') ||
     setweight(to_tsvector('english', coalesce(description, '')), 'B') ||
-    setweight(to_tsvector('english', coalesce(array_to_string(tags, ' '), '')), 'C')
+    setweight(to_tsvector('english', coalesce(public.immutable_array_to_string(tags, ' '), '')), 'C')
   ) STORED;
 
 -- WHY GIN index: GIN (Generalized Inverted Index) is the standard

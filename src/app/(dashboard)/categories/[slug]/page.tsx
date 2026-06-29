@@ -20,7 +20,7 @@ export default async function CategoryDetailPage(props: { params: Promise<{ slug
   }
 
   const supabase = await createClient();
-  const { data: { session } } = await supabase.auth.getSession();
+  const { data: { user } } = await supabase.auth.getUser();
   const { data: tools } = await supabase
     .from('tools')
     .select(TOOL_SELECT)
@@ -49,7 +49,7 @@ export default async function CategoryDetailPage(props: { params: Promise<{ slug
       </div>
 
       {toolsList.length > 0 ? (
-        <ToolGrid tools={toolsList} isAuthenticated={!!session} />
+        <ToolGrid tools={toolsList} isAuthenticated={!!user} />
       ) : (
         <div className="text-center py-16">
           <p className="text-slate-500 text-lg">No tools in this category yet. Be the first to <Link href="/submit" className="text-purple-400 hover:underline">submit one</Link>!</p>

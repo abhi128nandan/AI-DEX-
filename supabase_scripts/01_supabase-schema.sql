@@ -35,10 +35,26 @@ CREATE TABLE votes (
   UNIQUE(user_id, tool_id)
 );
 
+-- Create Tool Submissions table
+CREATE TABLE IF NOT EXISTS tool_submissions (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID REFERENCES auth.users(id) ON DELETE SET NULL,
+  name TEXT NOT NULL,
+  description TEXT NOT NULL,
+  category TEXT NOT NULL,
+  tags TEXT DEFAULT '',
+  status TEXT DEFAULT 'pending' CHECK (status IN ('pending', 'approved', 'rejected')),
+  is_deleted BOOLEAN DEFAULT false,
+  url TEXT,
+  website_url TEXT,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
 -- 4. Enable Row Level Security (RLS)
 ALTER TABLE tools ENABLE ROW LEVEL SECURITY;
 ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;
 ALTER TABLE votes ENABLE ROW LEVEL SECURITY;
+ALTER TABLE tool_submissions ENABLE ROW LEVEL SECURITY;
 
 -- 5. Create RLS Policies
 
@@ -60,6 +76,12 @@ CREATE POLICY "Authenticated users can insert votes."
 CREATE POLICY "Users can delete own votes." 
   ON votes FOR DELETE USING (auth.uid() = user_id);
 
+-- Tool Submissions: auth users can insert submissions
+CREATE POLICY "Authenticated users can insert submissions." 
+  ON tool_submissions FOR INSERT 
+  TO authenticated 
+  WITH CHECK (auth.uid() = user_id);
+
 -- 6. Trigger to automatically create profile on sign up
 CREATE OR REPLACE FUNCTION public.handle_new_user() 
 RETURNS TRIGGER AS $$
@@ -69,6 +91,8 @@ BEGIN
   RETURN new;
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
+
+DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
 
 CREATE TRIGGER on_auth_user_created
   AFTER INSERT ON auth.users
