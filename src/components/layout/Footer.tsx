@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 export default function Footer() {
   return (
-    <footer className="border-t border-white/10 bg-[#0a0a0f] py-12 mt-20">
+    <footer className="border-t border-[var(--border-default)] bg-[var(--surface-base)] py-16 mt-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-8">
         <div className="md:col-span-2">
           <Link href="/" className="flex items-center gap-2 mb-4">
@@ -36,7 +36,7 @@ export default function Footer() {
           </ul>
         </div>
       </div>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 pt-8 border-t border-white/10 text-sm text-slate-500 text-center flex flex-col md:flex-row justify-between items-center gap-4">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 pt-8 border-t border-[var(--border-subtle)] text-sm text-slate-500 text-center flex flex-col md:flex-row justify-between items-center gap-4">
         <p>© {new Date().getFullYear()} AIDex. All rights reserved.</p>
         <div className="flex gap-4">
           <Link href="#" onClick={(e) => e.preventDefault()} title="Coming soon" className="text-slate-600 cursor-not-allowed">Privacy Policy</Link>

@@ -53,7 +53,6 @@ export default function SearchBar() {
 
   return (
     <form onSubmit={handleSearch} className="relative w-full max-w-xl group">
-      <div className={`absolute inset-0 bg-gradient-to-r from-purple-500/20 to-cyan-500/20 blur-xl transition-opacity duration-300 ${focused ? 'opacity-100' : 'opacity-0'}`} />
       
       <div className="relative flex items-center">
         <SearchIcon className={`absolute left-4 w-4 h-4 transition-colors duration-300 ${focused ? 'text-purple-400' : 'text-slate-400'}`} />
@@ -64,10 +63,10 @@ export default function SearchBar() {
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
           placeholder="Search for AI tools, categories, or keywords..." 
-          className="w-full bg-[#12121c]/80 backdrop-blur border border-white/10 hover:border-white/20 focus:border-purple-500/50 rounded-2xl pl-11 pr-16 py-2.5 text-sm focus:outline-none focus:ring-4 focus:ring-purple-500/10 transition-all text-white placeholder:text-slate-500"
+          className="w-full bg-[var(--surface-overlay)] border border-[var(--border-default)] hover:border-[var(--border-hover)] focus:border-[var(--border-active)] rounded-xl pl-11 pr-16 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--border-active)] transition-all text-white placeholder:text-slate-500 shadow-sm"
         />
         <div className="absolute right-3 hidden sm:flex items-center gap-1">
-           <kbd className="px-2 py-0.5 text-[10px] uppercase font-semibold bg-white/5 border border-white/10 rounded flex items-center text-slate-400">⌘K</kbd>
+           <kbd className="px-2.5 py-1 text-[10px] uppercase font-semibold bg-white/[0.04] border border-[var(--border-default)] rounded-md flex items-center text-slate-400">⌘K</kbd>
         </div>
       </div>
     </form>

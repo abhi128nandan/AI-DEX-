@@ -13,7 +13,7 @@ export default function DashboardLayout({
       <Navbar />
       <div className="flex flex-1 pt-16">
         <Sidebar />
-        <main className="flex-1 w-full lg:ml-[72px] relative min-h-screen transition-all duration-300 overflow-x-hidden">
+        <main className="flex-1 w-full relative min-h-screen transition-all duration-300 overflow-x-hidden">
           {children}
           <Footer />
           <ToolDetailPanel />

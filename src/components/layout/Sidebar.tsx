@@ -17,13 +17,14 @@ import { useAnalytics } from '@/hooks/use-analytics';
 
 const NAV_ITEMS = [
   { path: '/', label: 'Home', Icon: Home, color: 'from-purple-500 to-violet-500' },
-  { path: '/trending', label: 'Trending', Icon: Flame, color: 'from-orange-500 to-amber-500' },
-  { path: '/new', label: 'Newly Added', Icon: Clock, color: 'from-emerald-500 to-teal-500' },
-  { path: '/top', label: 'Top Rated', Icon: Trophy, color: 'from-yellow-500 to-orange-500' },
+  { path: '/discover', label: 'Discover', Icon: Flame, color: 'from-orange-500 to-amber-500' },
+  { path: '/categories', label: 'Categories', Icon: Clock, color: 'from-emerald-500 to-teal-500' },
+  { path: '/collections', label: 'Collections', Icon: Trophy, color: 'from-yellow-500 to-orange-500' },
+  { path: '/leaderboard', label: 'Leaderboard', Icon: Trophy, color: 'from-yellow-500 to-orange-500' },
 ];
 
 const FOR_YOU_ITEMS = [
-  { path: '/saved', label: 'Saved Tools', Icon: Bookmark, color: 'from-pink-500 to-rose-500' }
+  { path: '/profile', label: 'Profile & Saved', Icon: Bookmark, color: 'from-pink-500 to-rose-500' }
 ];
 
 interface NavItemProps {
@@ -55,10 +56,10 @@ function NavItem({ path, label, Icon, color, isActive, expanded }: NavItemProps)
       )}
       <div className={`shrink-0 flex items-center justify-center w-8 h-8 rounded-lg outline-none transition-all duration-300 ease-out group-hover/nav:scale-110 ${
         isActive
-          ? `bg-gradient-to-br ${color} shadow-lg scale-105 shadow-purple-500/20`
+          ? `bg-gradient-to-br ${color} shadow-sm scale-105 shadow-black/20`
           : 'bg-white/[0.04] group-hover/nav:bg-white/[0.08]'
       }`}>
-        <Icon className={`${expanded ? 'w-4 h-4' : 'w-[18px] h-[18px]'} ${
+        <Icon className={`w-4 h-4 ${
           isActive ? 'text-white' : 'text-slate-400 group-hover/nav:text-white'
         } transition-colors`} />
       </div>
@@ -264,24 +265,7 @@ export default function Sidebar() {
         )}
       </AnimatePresence>
 
-      {/* === DESKTOP SIDEBAR === */}
-      <aside
-        onMouseEnter={() => {
-          setIsHovered(true);
-          if (!hasBeenExpanded) {
-            setHasBeenExpanded(true);
-            localStorage.setItem('sidebar-expanded-once', 'true');
-          }
-        }}
-        onMouseLeave={() => setIsHovered(false)}
-        className={`fixed left-0 top-16 bottom-0 hidden lg:flex flex-col overflow-hidden border-r border-white/[0.06] z-50 py-5 transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-          isExpanded 
-            ? 'w-[260px] px-4 bg-[#0a0a10]/90 backdrop-blur-2xl shadow-[4px_0_24px_-4px_rgba(0,0,0,0.5)]' 
-            : 'w-[72px] px-2 bg-[#0a0a0f]/80 backdrop-blur-xl'
-        }`}
-      >
-        <SidebarContent />
-      </aside>
+      {/* === DESKTOP SIDEBAR REMOVED TO PREVENT DASHBOARD FEELING === */}
     </>
   );
 }

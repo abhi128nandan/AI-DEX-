@@ -16,11 +16,11 @@ export default function Navbar() {
   }, [pathname]);
 
   return (
-    <nav className="fixed top-0 z-50 w-full bg-[var(--surface-base)]/80 backdrop-blur-xl border-b border-white/[0.08] shadow-[0_1px_40px_-20px_rgba(124,58,237,0.3)]">
+    <nav className="fixed top-0 z-50 w-full bg-[var(--surface-base)]/80 backdrop-blur-lg border-b border-[var(--border-default)] shadow-[0_1px_0_var(--border-subtle)]">
       <div className="mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         <div className="flex items-center gap-8 lg:w-64 ml-12 lg:ml-0">
           <Link href="/" className="flex items-center gap-2.5 group">
-            <div className="bg-gradient-to-r from-purple-600 to-cyan-500 p-1.5 rounded-lg shadow-lg shadow-purple-500/20 group-hover:shadow-purple-500/40 transition-all duration-300">
+            <div className="bg-gradient-to-r from-purple-600 to-cyan-500 p-1.5 rounded-xl shadow-sm transition-all duration-300">
               <Sparkles className="w-5 h-5 text-white" />
             </div>
             <span className="font-bold text-xl tracking-tight text-white">
@@ -29,9 +29,14 @@ export default function Navbar() {
           </Link>
         </div>
 
-        {/* Desktop search — hidden on mobile */}
-        <div className="flex-1 flex justify-center max-w-2xl px-8 hidden md:flex">
-           <SearchBar />
+        {/* Desktop Navigation */}
+        <div className="hidden lg:flex items-center gap-6 justify-center flex-1">
+          <Link href="/" className={`text-sm font-semibold transition-colors ${pathname === '/' ? 'text-white' : 'text-slate-400 hover:text-white'}`}>Home</Link>
+          <Link href="/discover" className={`text-sm font-semibold transition-colors ${pathname === '/discover' ? 'text-white' : 'text-slate-400 hover:text-white'}`}>Discover</Link>
+          <Link href="/categories" className={`text-sm font-semibold transition-colors ${pathname === '/categories' ? 'text-white' : 'text-slate-400 hover:text-white'}`}>Categories</Link>
+          <Link href="/collections" className={`text-sm font-semibold transition-colors ${pathname === '/collections' ? 'text-white' : 'text-slate-400 hover:text-white'}`}>Collections</Link>
+          <Link href="/leaderboard" className={`text-sm font-semibold transition-colors ${pathname === '/leaderboard' ? 'text-white' : 'text-slate-400 hover:text-white'}`}>Leaderboard</Link>
+          <Link href="/submit" className={`text-sm font-semibold transition-colors ${pathname === '/submit' ? 'text-white' : 'text-slate-400 hover:text-white'}`}>Submit Tool</Link>
         </div>
 
         {/* Mobile search — icon button + expandable bar */}
@@ -59,6 +64,9 @@ export default function Navbar() {
         </div>
 
         <div className="flex items-center gap-4 lg:w-64 justify-end">
+          <div className="hidden lg:block">
+            <SearchBar />
+          </div>
           <AuthButton />
         </div>
       </div>

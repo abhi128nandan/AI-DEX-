@@ -335,7 +335,7 @@ export default function ToolDetailModal({ tool, isOpen, onClose }: ToolDetailMod
                 </a>
               )}
               <Link
-                href={`/tools/${tool.slug}`}
+                href={`/tool/${tool.slug}`}
                 onClick={handleClose}
                 className="flex items-center justify-center gap-1.5 px-5 py-3 rounded-xl bg-white/[0.05] border border-white/[0.08] hover:bg-white/10 text-slate-300 hover:text-white font-semibold transition-all text-sm"
               >

@@ -58,7 +58,7 @@ export async function generateMetadata(
     openGraph: {
       title,
       description,
-      url: `https://aidex.dev/tools/${slug}`,
+      url: `https://aidex.dev/tool/${slug}`,
       siteName: 'AIDex',
       type: 'website',
     },
@@ -68,7 +68,7 @@ export async function generateMetadata(
       description,
     },
     alternates: {
-      canonical: `https://aidex.dev/tools/${slug}`,
+      canonical: `https://aidex.dev/tool/${slug}`,
     },
   };
 }
@@ -297,7 +297,7 @@ async function ToolPageContent(props: { params: Promise<{ slug: string }> }) {
                    const initials = t.name.substring(0, 2).toUpperCase();
                    const logoUrl = resolveLogoUrl(t.name, t.logo_url ?? undefined, t.website_url ?? undefined);
                    return (
-                     <Link key={t.id} href={`/tools/${t.slug}`} className="flex items-center gap-3 p-3 rounded-xl hover:bg-white/5 transition-colors border border-transparent hover:border-white/10 group">
+                     <Link key={t.id} href={`/tool/${t.slug}`} className="flex items-center gap-3 p-3 rounded-xl hover:bg-white/5 transition-colors border border-transparent hover:border-white/10 group">
                        <div className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0 border border-white/10 overflow-hidden relative shadow-sm" style={{ background: '#111119' }}>
                          {logoUrl ? (
                            <ClientFallbackImage src={logoUrl} alt={t.name} fallbackInitials={initials} className="object-contain" />

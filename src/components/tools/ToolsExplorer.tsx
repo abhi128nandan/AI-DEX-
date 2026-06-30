@@ -129,7 +129,6 @@ export default function ToolsExplorer({ tools, isAuthenticated = false, savedToo
       <div className="space-y-5">
         {/* Premium Search Bar */}
         <div className="relative group">
-          <div className="absolute -inset-[1px] bg-gradient-to-r from-purple-600/20 via-cyan-600/20 to-purple-600/20 rounded-2xl blur-sm opacity-0 group-focus-within:opacity-100 transition-opacity duration-500" />
           <div className="relative">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500 group-focus-within:text-purple-400 transition-colors" />
             <input
@@ -137,44 +136,63 @@ export default function ToolsExplorer({ tools, isAuthenticated = false, savedToo
               placeholder="Search AI tools by name or description..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-12 pr-4 py-4 bg-white/[0.03] border border-white/[0.08] rounded-xl text-white placeholder:text-slate-600 focus:outline-none focus:ring-2 focus:ring-purple-500/30 focus:border-purple-500/30 transition-all text-[14px] font-medium"
+              className="w-full pl-12 pr-4 py-4 bg-[var(--surface-overlay)] border border-[var(--border-default)] hover:border-[var(--border-hover)] focus:border-[var(--border-active)] rounded-xl text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-[var(--border-active)] transition-all text-sm font-medium shadow-sm"
               id="tool-search-input"
             />
           </div>
         </div>
 
-        {/* Filters Row — Radix Select Dropdowns */}
-        <div className="flex flex-col sm:flex-row gap-4">
+        {/* Discovery Toolbar */}
+        <div className="flex flex-col sm:flex-row gap-4 items-center justify-between mt-6 bg-[var(--surface-overlay)] p-4 rounded-xl border border-[var(--border-subtle)]">
+          
+          <div className="flex items-center gap-2">
+            <h2 className="text-sm font-bold text-white tracking-tight">
+              <span className="text-purple-400 mr-1.5">{filteredAndSortedTools.length}</span>
+              {filteredAndSortedTools.length === 1 ? 'tool' : 'tools'} found
+            </h2>
+          </div>
 
-
-          {/* Sort Filter */}
-          <div className="flex-1">
-            <div className="flex items-center gap-2 mb-2">
-              <ArrowUpDown className="w-3.5 h-3.5 text-slate-600" />
-              <span className="text-[11px] font-bold text-slate-600 uppercase tracking-widest">Sort By</span>
+          <div className="flex items-center gap-3 w-full sm:w-auto">
+            {/* Category Filter */}
+            <div className="w-full sm:w-[180px]">
+              <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+                <SelectTrigger id="category-filter" className="bg-[var(--surface-base)] border-[var(--border-default)]">
+                  <SelectValue placeholder="Category" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Categories</SelectItem>
+                  {activeCategories.map(cat => (
+                    <SelectItem key={cat} value={cat}>{cat}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
-            <Select value={sortBy} onValueChange={setSortBy}>
-              <SelectTrigger icon={<ArrowUpDown className="w-4 h-4" />} id="sort-filter">
-                <SelectValue placeholder="Sort by..." />
-              </SelectTrigger>
-              <SelectContent>
-                {SORT_OPTIONS.map(option => (
-                  <SelectItem key={option.value} value={option.value}>
-                    <span className="flex items-center gap-2">
-                      <span className="text-sm">{option.icon}</span>
-                      {option.label}
-                    </span>
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+
+            {/* Sort Filter */}
+            <div className="w-full sm:w-[160px]">
+              <Select value={sortBy} onValueChange={setSortBy}>
+                <SelectTrigger icon={<ArrowUpDown className="w-4 h-4" />} id="sort-filter" className="bg-[var(--surface-base)] border-[var(--border-default)]">
+                  <SelectValue placeholder="Sort by..." />
+                </SelectTrigger>
+                <SelectContent>
+                  {SORT_OPTIONS.map(option => (
+                    <SelectItem key={option.value} value={option.value}>
+                      <span className="flex items-center gap-2">
+                        <span className="text-sm">{option.icon}</span>
+                        {option.label}
+                      </span>
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
           </div>
         </div>
 
         {/* Active Filters Display */}
         {(debouncedSearch || selectedCategory !== 'all') && (
           <div className="flex flex-wrap gap-2 items-center">
-            <span className="text-[11px] font-bold text-slate-600 uppercase tracking-wider">Active:</span>
+            <span className="text-xs font-semibold text-slate-500">Active filters:</span>
             {debouncedSearch && (
               <button 
                 onClick={() => setSearchQuery('')}
@@ -206,52 +224,8 @@ export default function ToolsExplorer({ tools, isAuthenticated = false, savedToo
         )}
       </div>
 
-      {/* Categories Pill Menu */}
-      <div className="flex overflow-x-auto whitespace-nowrap gap-2 pb-2 scrollbar-hide max-w-full">
-        <button
-          onClick={() => setSelectedCategory('all')}
-          className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${
-            selectedCategory === 'all' 
-              ? 'bg-purple-600 text-white shadow-md shadow-purple-500/20' 
-              : 'bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white border border-white/5'
-          }`}
-        >
-          All
-        </button>
-        {activeCategories.map(category => {
-          const Icon = getCategoryIcon(category);
-          const count = categoryCounts[category];
-          const isSelected = selectedCategory === category;
-          return (
-            <button
-              key={category}
-              onClick={() => setSelectedCategory(category)}
-              className={`flex items-center gap-1.5 px-4 py-1.5 rounded-full text-sm font-medium transition-all ${
-                isSelected 
-                  ? 'bg-purple-600 text-white shadow-md shadow-purple-500/20' 
-                  : 'bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white border border-white/5'
-              }`}
-            >
-              <Icon className="w-3.5 h-3.5" />
-              {category}
-              <span className={`text-[10px] ml-1 px-1.5 py-0.5 rounded-md ${
-                isSelected ? 'bg-black/20 text-white' : 'bg-white/10 text-slate-300'
-              }`}>
-                {count}
-              </span>
-            </button>
-          );
-        })}
-      </div>
-
       {/* Results */}
       <div>
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-lg font-bold text-white tracking-tight">
-            <span className="text-slate-500 font-mono text-sm mr-2">{filteredAndSortedTools.length}</span>
-            {filteredAndSortedTools.length === 1 ? 'tool' : 'tools'} found
-          </h2>
-        </div>
 
         {filteredAndSortedTools.length === 0 ? (
           <div className="text-center py-20 px-4">
